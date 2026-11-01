@@ -965,6 +965,16 @@
   </div>
 
   <script>
+    // PROTEÇÃO POR SENHA (Shilla)
+    (function() {
+      const senhaCorreta = "Shilla";
+      const senhaDigitada = prompt("🔒 Digite a senha para acessar a Estante Virtual:");
+      if (senhaDigitada !== senhaCorreta) {
+        document.body.innerHTML = "<h2 style='color: white; text-align: center; margin-top: 20vh; font-family: sans-serif;'>Acesso negado. Recarregue a página para tentar novamente.</h2>";
+        throw new Error("Acesso não autorizado.");
+      }
+    })();
+
     let readBooks = JSON.parse(localStorage.getItem('my_read_books')) || [];
     let boughtBooks = JSON.parse(localStorage.getItem('my_bought_books')) || [];
     let donatedBooks = JSON.parse(localStorage.getItem('my_donated_books')) || [];
