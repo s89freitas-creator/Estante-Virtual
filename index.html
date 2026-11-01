@@ -519,6 +519,25 @@
           </div>
 
           <div class="filter-box">
+            <label>Filtro Gênero (Ficção)</label>
+            <select id="filterGenre" onchange="render()">
+              <option value="all">🎭 Todos os Gêneros</option>
+              <option value="Romance">Romance</option>
+              <option value="Drama">Drama</option>
+              <option value="Distopia">Distopia</option>
+              <option value="Ficção Científica">Ficção Científica</option>
+              <option value="Terror">Terror</option>
+              <option value="Fantasia">Fantasia</option>
+              <option value="Erótico">Erótico</option>
+              <option value="Clássicos">Clássicos</option>
+              <option value="Comédia">Comédia</option>
+              <option value="Suspense">Suspense</option>
+              <option value="Infanto-Juvenil">Infanto-Juvenil</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </div>
+
+          <div class="filter-box">
             <label>Filtro 6: Editora</label>
             <select id="shelfPublisherFilter" onchange="render()">
               <option value="all">🏢 Todas as Editoras</option>
@@ -1320,6 +1339,7 @@
       const f3 = document.getElementById('filter3').value;
       const f4 = document.getElementById('filter4').value;
       const f5 = document.getElementById('filter5').value;
+      const genreFilter = document.getElementById('filterGenre') ? document.getElementById('filterGenre').value : 'all';
       const pubFilter = document.getElementById('shelfPublisherFilter').value;
       const yearFilter = document.getElementById('shelfYearFilter').value;
       const viewMode = document.getElementById('shelfViewMode') ? document.getElementById('shelfViewMode').value : 'hogwarts';
@@ -1392,6 +1412,8 @@
         if (f4 === 'nao_ficcao' && f5 !== 'all') {
           if (b.nonFictionSubcat !== f5) return false;
         }
+
+        if (genreFilter !== 'all' && (b.fictionGenre || '') !== genreFilter) return false;
 
         if (pubFilter !== 'all') {
           const bookPub = (b.publisher || '').trim();
