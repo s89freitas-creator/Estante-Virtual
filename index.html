@@ -139,9 +139,6 @@
     .checkbox-label { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; cursor: pointer; background: rgba(255,255,255,0.03); padding: 6px 10px; border-radius: 8px; }
     button.btn-primary { width: 100%; padding: 12px; background: linear-gradient(135deg, var(--accent), #6d28d9); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 14px var(--accent-glow); }
 
-    .format-badge { font-size: 0.65rem; background: rgba(255,255,255,0.1); color: var(--gold-bright); padding: 2px 6px; border-radius: 4px; display: inline-block; }
-    .diary-entry-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 8px 10px; border-radius: 8px; margin-top: 6px; font-size: 0.8rem; }
-    
     .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); justify-content: center; align-items: center; z-index: 100; }
     .modal-content { background: var(--card-bg); padding: 24px; border-radius: 20px; max-width: 600px; width: 92%; border: 1px solid var(--accent); max-height: 85vh; overflow-y: auto; }
     
@@ -654,7 +651,7 @@
       </div>
     </div>
 
-    <!-- ABA 8: SALA DE TROFÉUS -->
+    <!-- ABA 8: SALA DE TROFÉUS (COMPLETA) -->
     <div id="trophyTab" class="tab-content">
       <div class="card">
         <h2>🏅 Sala de Troféus & Níveis de Conquista</h2>
@@ -743,83 +740,23 @@
         <button onclick="closeDiaryModal()" style="background:none; border:none; color:var(--text); font-size:1.2rem; cursor:pointer;">✕</button>
       </div>
 
-      <div id="modalSeriesBadge" style="margin-bottom: 8px;"></div>
-
       <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; font-size: 0.82rem; margin-bottom: 14px; display:flex; flex-direction:column; gap:6px;">
         <div>Editora: <strong id="modalPublisher">-</strong> | Formato: <strong id="modalFormat">-</strong></div>
         <div>Páginas Totais: <strong id="modalPages">-</strong> | Status Atual: <strong id="modalStatus" style="color:var(--gold-bright);">-</strong></div>
         <div>Início: <strong id="modalStartDate">-</strong> | Fim / Conclusão: <strong id="modalEndDate">-</strong></div>
-        <div style="color: var(--success);" id="modalProgressSummary">Progresso: Página 0 de 0 (0%)</div>
       </div>
 
       <div style="background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.3); padding: 12px; border-radius: 12px; margin-bottom: 14px;">
-        <h3 style="font-size: 0.85rem; color: #c084fc; margin: 0 0 8px 0;">📈 Atualizar Progresso & Status</h3>
-        
-        <div class="inline-fields">
-          <div>
-            <label style="margin-top:0;">Alterar Status</label>
-            <select id="modalUpdateStatus" onchange="onModalStatusChange()">
-              <option value="Lido">Lido</option>
-              <option value="Lendo">Lendo</option>
-              <option value="Relendo">Relendo</option>
-              <option value="Não Lido">Não Lido (Fila)</option>
-              <option value="Abandonado">Abandonado</option>
-            </select>
-          </div>
-          <div>
-            <label style="margin-top:0;">Em qual página você está?</label>
-            <input type="number" id="modalCurrentPageInput" placeholder="Ex: 120">
-          </div>
-        </div>
-
-        <div class="inline-fields" style="margin-top: 8px;">
-          <div>
-            <label style="margin-top:0;">Data da Leitura / Atualização</label>
-            <input type="date" id="modalProgressDate">
-          </div>
-          <div id="modalEndDateContainer" style="display:none;">
-            <label style="margin-top:0; color:var(--success);">Data de Conclusão (Fim)</label>
-            <input type="date" id="modalCompletionDate">
-          </div>
-        </div>
-
-        <label>Comentário ou Notas desta Sessão</label>
-        <textarea id="modalProgressNote" placeholder="O que achou dessa parte..."></textarea>
-        
-        <button class="btn-primary" onclick="saveProgressEntry()" style="margin-top: 10px; padding: 10px; font-size: 0.85rem;">Salvar Atualização de Leitura</button>
+        <h3 style="font-size: 0.85rem; color: #c084fc; margin: 0 0 8px 0;">📈 Atualizar Status & Notas</h3>
+        <select id="modalUpdateStatus" style="margin-bottom:8px;">
+          <option value="Lido">Lido</option>
+          <option value="Lendo">Lendo</option>
+          <option value="Relendo">Relendo</option>
+          <option value="Não Lido">Não Lido (Fila)</option>
+          <option value="Abandonado">Abandonado</option>
+        </select>
+        <button class="btn-primary" onclick="saveProgressEntry()" style="padding: 8px; font-size: 0.85rem;">Salvar Atualização</button>
       </div>
-
-      <h3 style="font-size: 0.9rem; color: #c084fc; margin: 16px 0 8px 0;">📝 Histórico de Bordo & Datas</h3>
-      <div id="modalJournalHistory" style="max-height: 180px; overflow-y: auto;"></div>
-    </div>
-  </div>
-
-  <!-- MODAL DE EDIÇÃO TEXTOS -->
-  <div class="modal" id="editTextModal">
-    <div class="modal-content">
-      <h2>✏️ Editar Texto Avulso</h2>
-      <form id="editTextForm" onsubmit="saveEditedTextItem(event)">
-        <label>Título do Texto</label>
-        <input type="text" id="editTxtTitle" required>
-        <label>Autor(a)</label>
-        <input type="text" id="editTxtAuthor" list="authorsDatalist" required autocomplete="off">
-        <div class="inline-fields">
-          <div><label>Páginas</label><input type="number" id="editTxtPages" required></div>
-          <div><label>Tipo de Texto</label>
-            <select id="editTxtCategory">
-              <option value="Conto">Conto</option><option value="Crônica">Crônica</option><option value="Peça">Peça</option><option value="HQ">HQ</option><option value="Poesia">Poesia</option><option value="Ensaio">Ensaio</option><option value="Discurso">Discurso</option><option value="Outros">Outros</option>
-            </select>
-          </div>
-        </div>
-        <div class="inline-fields">
-          <div><label>Livro / Coletânea de Origem</label><input type="text" id="editTxtSourceBook"></div>
-          <div><label>Data da Leitura</label><input type="date" id="editTxtDate"></div>
-        </div>
-        <label>Comentário ou Notas</label>
-        <textarea id="editTxtComment"></textarea>
-        <button type="submit" class="btn-primary" style="margin-top: 14px;">💾 Salvar Alterações</button>
-        <button type="button" class="btn-primary" onclick="closeEditTextModal()" style="background: transparent; border: 1px solid #334155; margin-top: 8px;">Cancelar</button>
-      </form>
     </div>
   </div>
 
@@ -981,6 +918,35 @@
     </div>
   </div>
 
+  <!-- MODAL DE EDIÇÃO TEXTOS AVULSOS -->
+  <div class="modal" id="editTextModal">
+    <div class="modal-content">
+      <h2>✏️ Editar Texto Avulso</h2>
+      <form id="editTextForm" onsubmit="saveEditedTextItem(event)">
+        <label>Título do Texto</label>
+        <input type="text" id="editTxtTitle" required>
+        <label>Autor(a)</label>
+        <input type="text" id="editTxtAuthor" list="authorsDatalist" required autocomplete="off">
+        <div class="inline-fields">
+          <div><label>Páginas</label><input type="number" id="editTxtPages" required></div>
+          <div><label>Tipo de Texto</label>
+            <select id="editTxtCategory">
+              <option value="Conto">Conto</option><option value="Crônica">Crônica</option><option value="Peça">Peça</option><option value="HQ">HQ</option><option value="Poesia">Poesia</option><option value="Ensaio">Ensaio</option><option value="Discurso">Discurso</option><option value="Outros">Outros</option>
+            </select>
+          </div>
+        </div>
+        <div class="inline-fields">
+          <div><label>Livro / Coletânea de Origem</label><input type="text" id="editTxtSourceBook"></div>
+          <div><label>Data da Leitura</label><input type="date" id="editTxtDate"></div>
+        </div>
+        <label>Comentário ou Notas</label>
+        <textarea id="editTxtComment"></textarea>
+        <button type="submit" class="btn-primary" style="margin-top: 14px;">💾 Salvar Alterações</button>
+        <button type="button" class="btn-primary" onclick="closeEditTextModal()" style="background: transparent; border: 1px solid #334155; margin-top: 8px;">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
   <script>
     (function() {
       const senhaCorreta = "Shilla";
@@ -999,9 +965,6 @@
     let seriesStatuses = JSON.parse(localStorage.getItem('my_series_statuses')) || {};
     let seriesCheckedBooks = JSON.parse(localStorage.getItem('my_series_checked_books')) || {};
 
-    let currentTextCategoryFilter = 'all';
-    let activeEditingTextIndex = null;
-
     let defaultChallenges = [
       { id: 'austen', title: 'Desafio Jane Austen (Romances e Obras Inacabadas)', books: [
         {title: 'Orgulho e Preconceito', read: false}, {title: 'Razão e Sensibilidade', read: false}, {title: 'Emma', read: false}, {title: 'Persuasão', read: false}, {title: 'Mansfield Park', read: false}, {title: 'A Abadia de Northanger', read: false}, {title: 'Lady Susan', read: false}, {title: 'Sanditon (Incompleto)', read: false}, {title: 'Os Watsons (Incompleto)', read: false}
@@ -1011,29 +974,18 @@
       ] },
       { id: 'autores100', title: 'Desafio 100 Autores', books: Array.from({length: 100}, (_, i) => ({title: `Autor(a) #${i+1}`, read: false})) },
       { id: 'autoras100', title: 'Desafio 100 Autoras', books: Array.from({length: 100}, (_, i) => ({title: `Autora #${i+1}`, read: false})) },
-      { id: 'king', title: 'Desafio Stephen King (Eterno / Automático)', books: [], allowAdd: true, dynamicKing: true }
+      { id: 'king', title: 'Desafio Stephen King', books: [
+        {title: 'Carrie', read: false}, {title: 'O Iluminado', read: false}, {title: 'It: A Coisa', read: false}, {title: 'A Dança da Morte', read: false}, {title: 'Misery', read: false}
+      ] }
     ];
 
-    let savedChallenges = JSON.parse(localStorage.getItem('my_custom_challenges')) || [];
-    let customChallenges = [];
-    defaultChallenges.forEach(def => {
-      let foundSaved = savedChallenges.find(sc => sc.id === def.id || sc.title === def.title);
-      if (foundSaved && !def.dynamicKing) {
-        def.books.forEach((db, idx) => {
-          if (foundSaved.books[idx]) db.read = foundSaved.books[idx].read;
-        });
-      }
-      customChallenges.push(def);
-    });
-
-    savedChallenges.forEach(sc => {
-      if (!sc.id || !customChallenges.some(cc => cc.title === sc.title)) {
-        customChallenges.push(sc);
-      }
-    });
+    let savedChallenges = JSON.parse(localStorage.getItem('my_custom_challenges')) || null;
+    let customChallenges = savedChallenges ? savedChallenges : defaultChallenges;
 
     let activeEditBook = null;
     let activeDiaryBook = null;
+    let currentTextCategoryFilter = 'all';
+    let activeEditingTextIndex = null;
 
     const textCategoryColors = {
       'Conto': '#0284c7', 'Crônica': '#0d9488', 'Peça': '#d97706', 'HQ': '#db2777',
@@ -1041,7 +993,7 @@
     };
 
     function exportBackup() {
-      const backupData = { readBooks, boughtBooks, donatedBooks, customTexts, customGoals, seriesStatuses, seriesCheckedBooks, customChallenges: customChallenges.filter(c => !c.dynamicKing) };
+      const backupData = { readBooks, boughtBooks, donatedBooks, customTexts, customGoals, seriesStatuses, seriesCheckedBooks, customChallenges };
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
@@ -1067,6 +1019,7 @@
             if (parsed.customGoals) customGoals = parsed.customGoals;
             if (parsed.seriesStatuses) seriesStatuses = parsed.seriesStatuses;
             if (parsed.seriesCheckedBooks) seriesCheckedBooks = parsed.seriesCheckedBooks;
+            if (parsed.customChallenges) customChallenges = parsed.customChallenges;
             save(); alert('🎉 Backup importado com sucesso!');
           } catch (err) { alert('❌ Erro ao ler o arquivo de backup.'); }
         };
@@ -1122,7 +1075,6 @@
       });
     }
 
-    // REGRA DE CORES PERFEITA: NÃO LIDOS = CINZA, LENDO/RELENDO = BRANCO, LIDOS = CATEGORIA
     function getSpineColor(b) {
       const status = b.statusTag || b.status || 'Lido';
       if (status === 'Não Lido') return '#64748b'; 
@@ -1167,11 +1119,7 @@
 
       if (hasWoman && statusTag !== 'Não Lido') { c1 = '#be185d'; c2 = '#ec4899'; }
 
-      return generateStyledSvg(title, author, c1, c2, '#ffffff', badge, isSeries, seriesName, seriesVol, seriesTotal);
-    }
-
-    function generateStyledSvg(title, author, color1, color2, textColor, badgeText, isSeries, seriesName, seriesVol, seriesTotal) {
-      let safeTitle = escapeXml(title), safeAuthor = escapeXml(author), safeBadge = escapeXml(badgeText);
+      let safeTitle = escapeXml(title), safeAuthor = escapeXml(author), safeBadge = escapeXml(badge);
       let bottomText = safeAuthor;
       if (isSeries && seriesName) {
         let volStr = seriesVol ? ` - Vol. ${seriesVol}` : '';
@@ -1190,18 +1138,7 @@
       let startY = 120 - ((lines.length - 1) * 12), tspanElements = '';
       lines.forEach((line, idx) => { tspanElements += `<tspan x="100" dy="${idx === 0 ? 0 : 22}">${line}</tspan>`; });
 
-      let bottomLines = [], bWords = bottomText.split(' '), bCurrent = '';
-      bWords.forEach(w => {
-        if ((bCurrent + ' ' + w).trim().length <= 28) bCurrent = (bCurrent + ' ' + w).trim();
-        else { if (bCurrent) bottomLines.push(bCurrent); bCurrent = w; }
-      });
-      if (bCurrent) bottomLines.push(bCurrent);
-      if (bottomLines.length > 2) bottomLines = bottomLines.slice(0, 2);
-
-      let bTspanElements = '';
-      bottomLines.forEach((bLine, idx) => { bTspanElements += `<tspan x="100" dy="${idx === 0 ? 0 : 14}">${bLine}</tspan>`; });
-
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 0 200 300"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${color1}"/><stop offset="100%" stop-color="${color2}"/></linearGradient></defs><rect width="200" height="300" fill="url(#g)"/><rect x="14" y="14" width="172" height="272" fill="none" stroke="${textColor === '#0f172a' ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.2)'}" stroke-width="2" rx="6"/><rect x="20" y="24" width="105" height="20" rx="4" fill="${textColor === '#0f172a' ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.35)'}"/><text x="72.5" y="38" font-family="Segoe UI, sans-serif" font-weight="bold" font-size="8" fill="${textColor}" text-anchor="middle">${safeBadge}</text><text x="100" y="${startY}" font-family="Segoe UI, sans-serif" font-weight="bold" font-size="15" fill="${textColor}" text-anchor="middle" width="160">${tspanElements}</text><line x1="30" y1="210" x2="170" y2="210" stroke="${textColor === '#0f172a' ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.2)'}" stroke-width="1"/><text x="100" y="235" font-family="Segoe UI, sans-serif" font-size="10" fill="${textColor === '#0f172a' ? '#334155' : 'rgba(255,255,255,0.85)'}" text-anchor="middle">${bTspanElements}</text></svg>`;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 0 200 300"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient></defs><rect width="200" height="300" fill="url(#g)"/><rect x="14" y="14" width="172" height="272" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" rx="6"/><rect x="20" y="24" width="105" height="20" rx="4" fill="rgba(0,0,0,0.35)"/><text x="72.5" y="38" font-family="Segoe UI, sans-serif" font-weight="bold" font-size="8" fill="#ffffff" text-anchor="middle">${safeBadge}</text><text x="100" y="${startY}" font-family="Segoe UI, sans-serif" font-weight="bold" font-size="15" fill="#ffffff" text-anchor="middle" width="160">${tspanElements}</text><line x1="30" y1="210" x2="170" y2="210" stroke="rgba(255,255,255,0.2)" stroke-width="1"/><text x="100" y="235" font-family="Segoe UI, sans-serif" font-size="10" fill="rgba(255,255,255,0.85)" text-anchor="middle">${escapeXml(bottomText)}</text></svg>`;
       return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
     }
 
@@ -1219,19 +1156,15 @@
       if (tabId === 'pointsTab') renderPointsModule();
     }
 
-    function toggleSeriesInputs(formId) {
-      document.getElementById(`seriesFields_${formId}`).style.display = document.getElementById(formId === 'unifiedBookForm' ? 'uniIsSeries' : 'editIsSeries').checked ? 'block' : 'none';
-    }
-
     function save() {
       localStorage.setItem('my_read_books', JSON.stringify(readBooks));
       localStorage.setItem('my_bought_books', JSON.stringify(boughtBooks));
       localStorage.setItem('my_donated_books', JSON.stringify(donatedBooks));
       localStorage.setItem('my_custom_texts', JSON.stringify(customTexts));
       localStorage.setItem('my_custom_goals', JSON.stringify(customGoals));
-      localStorage.setItem('my_custom_challenges', JSON.stringify(customChallenges));
       localStorage.setItem('my_series_statuses', JSON.stringify(seriesStatuses));
       localStorage.setItem('my_series_checked_books', JSON.stringify(seriesCheckedBooks));
+      localStorage.setItem('my_custom_challenges', JSON.stringify(customChallenges));
       updateDatalists(); render();
     }
 
@@ -1257,7 +1190,38 @@
     }
 
     function parseBasePoints(typeVal) { return parseInt(typeVal) || 10; }
-    function calculateTrophyBonusPoints() { return getTrophiesData().filter(t => t.unlocked).reduce((acc, t) => acc + (t.reward || 30), 0); }
+    
+    // TODAS AS CONQUISTAS E TROFÉUS ORIGINAIS RESTABELECIDOS
+    function getTrophiesData() {
+      const totalLidosCount = readBooks.length + customTexts.length;
+      const totalPagesCount = readBooks.reduce((acc, b) => acc + (parseInt(b.pages) || 0), 0);
+      const favCount = [...readBooks, ...boughtBooks].filter(b => b.isFavorite).length;
+      const seriesCount = Object.keys(seriesStatuses).length;
+
+      const getTier = (val, t1, t2, t3, t4) => {
+        if (val >= t4) return { tier: '💎 Diamante', reward: 120 };
+        if (val >= t3) return { tier: '🥇 Ouro', reward: 80 };
+        if (val >= t2) return { tier: '🥈 Prata', reward: 50 };
+        if (val >= t1) return { tier: '🥉 Bronze', reward: 30 };
+        return { tier: '🔒 Bloqueado', reward: 0 };
+      };
+
+      const tLidos = getTier(totalLidosCount, 5, 15, 30, 50);
+      const tPages = getTier(totalPagesCount, 1000, 3000, 6000, 10000);
+      const tFav = getTier(favCount, 3, 10, 20, 35);
+      const tSeries = getTier(seriesCount, 1, 3, 7, 12);
+
+      return [
+        { title: "📚 Maratonista Literária", desc: "Acumule livros e textos lidos.", unlocked: tLidos.reward > 0, progress: `${totalLidosCount} lidos (${tLidos.tier})`, reward: tLidos.reward },
+        { title: "📜 Devoradora de Páginas", desc: "Ultrapasse metas de páginas lidas.", unlocked: tPages.reward > 0, progress: `${totalPagesCount} págs (${tPages.tier})`, reward: tPages.reward },
+        { title: "❤️ Colecionadora de Amores", desc: "Marque livros como seus favoritos.", unlocked: tFav.reward > 0, progress: `${favCount} favoritos (${tFav.tier})`, reward: tFav.reward },
+        { title: "⚔️ Exploradora de Mundos", desc: "Acompanhe e conclua séries literárias.", unlocked: tSeries.reward > 0, progress: `${seriesCount} séries (${tSeries.tier})`, reward: tSeries.reward }
+      ];
+    }
+
+    function calculateTrophyBonusPoints() { 
+      return getTrophiesData().filter(t => t.unlocked).reduce((acc, t) => acc + (t.reward || 30), 0); 
+    }
 
     function openBookPreviewModal(listType, originalIndex) {
       const list = listType === 'read' ? readBooks : (listType === 'bought' ? boughtBooks : donatedBooks);
@@ -1273,7 +1237,7 @@
 
       let detailsHtml = `
         <div style="background:rgba(245, 158, 11, 0.15); border:1px solid rgba(245, 158, 11, 0.4); padding:6px 10px; border-radius:8px; font-weight:bold; color:var(--gold-bright); margin-bottom:4px;">
-          🪙 Pontos Conquistados / Valor: +${pts} moedas
+          🪙 Pontos Conquistados: +${pts} moedas
         </div>
         <div><strong>Categoria:</strong> ${b.typeVal == 12 ? 'Não Ficção' : (b.fictionGenre || 'Ficção')}</div>
         <div><strong>Status:</strong> ${b.statusTag || b.status || 'Lido'} | <strong>Páginas:</strong> ${b.pages || 0}</div>
@@ -1299,8 +1263,6 @@
       const f3 = document.getElementById('filter3').value;
       const f4 = document.getElementById('filter4').value;
       const genreFilter = document.getElementById('filterGenre') ? document.getElementById('filterGenre').value : 'all';
-      const pubFilter = document.getElementById('shelfPublisherFilter').value;
-      const yearFilter = document.getElementById('shelfYearFilter').value;
 
       const totalPages = readBooks.reduce((acc, b) => acc + (parseInt(b.pages) || 0), 0);
       const pageBonusPoints = Math.floor(totalPages / 1000) * 50;
@@ -1410,6 +1372,84 @@
       viewContainer.innerHTML = bookshelfHtml;
 
       renderGoals(); renderChallenges(); renderSeriesTab(); renderTrophies();
+    }
+
+    function renderChallenges() {
+      const container = document.getElementById('challengesContainer');
+      container.innerHTML = '';
+      customChallenges.forEach((chal, cIndex) => {
+        let itemsHtml = '', completedCount = 0;
+        chal.books.forEach((bk, bIndex) => {
+          if (bk.read) completedCount++;
+          itemsHtml += `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); padding:8px 12px; border-radius:8px; margin-bottom:6px; font-size:0.85rem;">
+              <label style="display:flex; align-items:center; gap:8px; margin:0; cursor:pointer; color:var(--text);">
+                <input type="checkbox" ${bk.read ? 'checked' : ''} onchange="toggleChallengeBook(${cIndex}, ${bIndex})">
+                <span style="${bk.read ? 'text-decoration:line-through; color:var(--text-muted);' : ''}">${bk.title}</span>
+              </label>
+              <button onclick="deleteChallengeItem(${cIndex}, ${bIndex})" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:0.8rem;" title="Remover item">🗑️</button>
+            </div>
+          `;
+        });
+
+        let addManualHtml = `
+          <div style="display:flex; gap:8px; margin-top:10px;">
+            <input type="text" id="manualItem_${cIndex}" placeholder="Adicionar título/autor manualmente..." style="padding:6px; font-size:0.8rem;">
+            <button class="btn-primary" onclick="addManualChallengeItem(${cIndex})" style="width:auto; padding:6px 12px; font-size:0.8rem;">➕ Adicionar</button>
+          </div>
+        `;
+
+        const totalChal = chal.books.length, percentChal = totalChal > 0 ? Math.round((completedCount / totalChal) * 100) : 0;
+        container.innerHTML += `
+          <details style="background:rgba(255,255,255,0.03); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
+            <summary style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:1.05rem; color:#c084fc;">${chal.title}</span>
+              <div style="display:flex; align-items:center; gap:12px;">
+                <span style="font-size:0.8rem; color:var(--gold-bright); font-weight:bold;">${completedCount} / ${totalChal} (${percentChal}%)</span>
+                <button onclick="deleteEntireChallenge(${cIndex})" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:0.85rem;" title="Excluir Desafio Inteiro">🗑️ Excluir</button>
+              </div>
+            </summary>
+            <div style="background:rgba(0,0,0,0.4); border-radius:6px; height:8px; overflow:hidden; margin:12px 0;"><div style="background:var(--accent); height:100%; width:${percentChal}%;"></div></div>
+            ${itemsHtml}
+            ${addManualHtml}
+          </details>
+        `;
+      });
+    }
+
+    function toggleChallengeBook(cIndex, bIndex) {
+      customChallenges[cIndex].books[bIndex].read = !customChallenges[cIndex].books[bIndex].read;
+      save(); renderChallenges();
+    }
+
+    function addManualChallengeItem(cIndex) {
+      const inputEl = document.getElementById(`manualItem_${cIndex}`);
+      const val = inputEl.value.trim();
+      if (val) {
+        customChallenges[cIndex].books.push({ title: val, read: false });
+        inputEl.value = '';
+        save(); renderChallenges();
+      }
+    }
+
+    function deleteChallengeItem(cIndex, bIndex) {
+      customChallenges[cIndex].books.splice(bIndex, 1);
+      save(); renderChallenges();
+    }
+
+    function deleteEntireChallenge(cIndex) {
+      if (confirm(`Deseja excluir permanentemente este desafio?`)) {
+        customChallenges.splice(cIndex, 1);
+        save(); renderChallenges();
+      }
+    }
+
+    function createNewCustomChallenge() {
+      const title = prompt("Digite o nome do novo desafio literário:");
+      if (title) {
+        customChallenges.push({ id: 'custom_' + Date.now(), title, books: [] });
+        save(); renderChallenges();
+      }
     }
 
     function addTextItem(e) {
@@ -1530,43 +1570,6 @@
       });
     }
 
-    function renderChallenges() {
-      const container = document.getElementById('challengesContainer');
-      container.innerHTML = '';
-      customChallenges.forEach((chal, cIndex) => {
-        let itemsHtml = '', completedCount = 0;
-        chal.books.forEach((bk, bIndex) => {
-          if (bk.read) completedCount++;
-          itemsHtml += `
-            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); padding:8px 12px; border-radius:8px; margin-bottom:6px; font-size:0.85rem;">
-              <label style="display:flex; align-items:center; gap:8px; margin:0; cursor:pointer; color:var(--text);">
-                <input type="checkbox" ${bk.read ? 'checked' : ''} onchange="toggleChallengeBook(${cIndex}, ${bIndex})">
-                <span style="${bk.read ? 'text-decoration:line-through; color:var(--text-muted);' : ''}">${bk.title}</span>
-              </label>
-            </div>
-          `;
-        });
-        const totalChal = chal.books.length, percentChal = totalChal > 0 ? Math.round((completedCount / totalChal) * 100) : 0;
-        container.innerHTML += `
-          <details style="background:rgba(255,255,255,0.03); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
-            <summary style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:1.05rem; color:#c084fc;">${chal.title}</span>
-              <span style="font-size:0.8rem; color:var(--gold-bright); font-weight:bold;">${completedCount} / ${totalChal} (${percentChal}%)</span>
-            </summary>
-            <div style="background:rgba(0,0,0,0.4); border-radius:6px; height:8px; overflow:hidden; margin:12px 0;"><div style="background:var(--accent); height:100%; width:${percentChal}%;"></div></div>
-            ${itemsHtml}
-          </details>
-        `;
-      });
-    }
-
-    function toggleChallengeBook(cIndex, bIndex) { customChallenges[cIndex].books[bIndex].read = !customChallenges[cIndex].books[bIndex].read; save(); renderChallenges(); }
-
-    function createNewCustomChallenge() {
-      const title = prompt("Digite o nome do novo desafio literário:");
-      if (title) { customChallenges.push({ id: 'custom_' + Date.now(), title, books: [], allowAdd: true }); save(); renderChallenges(); }
-    }
-
     function renderSeriesTab() {
       const seriesContainer = document.getElementById('seriesTrackingList');
       if (!seriesContainer) return;
@@ -1662,22 +1665,6 @@
       let removed = 0;
       for (let sName in seriesCheckedBooks) { if (!activeNames.has(sName.toLowerCase())) { delete seriesCheckedBooks[sName]; delete seriesStatuses[sName]; removed++; } }
       save(); renderSeriesTab(); alert(`🧹 ${removed} série(s) órfã(s) removida(s).`);
-    }
-
-    function getTrophiesData() {
-      const totalLidosCount = readBooks.length + customTexts.length, totalPagesCount = readBooks.reduce((acc, b) => acc + (parseInt(b.pages) || 0), 0);
-      const getTier = (val, t1, t2, t3, t4) => {
-        if (val >= t4) return { tier: '💎 Diamante', reward: 120 };
-        if (val >= t3) return { tier: '🥇 Ouro', reward: 80 };
-        if (val >= t2) return { tier: '🥈 Prata', reward: 50 };
-        if (val >= t1) return { tier: '🥉 Bronze', reward: 30 };
-        return { tier: '🔒 Bloqueado', reward: 0 };
-      };
-      const tLidos = getTier(totalLidosCount, 5, 15, 30, 50), tPages = getTier(totalPagesCount, 1000, 3000, 6000, 10000);
-      return [
-        { title: "📚 Maratonista Literária", desc: "Acumule livros e textos lidos.", unlocked: tLidos.reward > 0, progress: `${totalLidosCount} lidos (${tLidos.tier})`, reward: tLidos.reward },
-        { title: "📜 Devoradora de Páginas", desc: "Ultrapasse metas de páginas lidas.", unlocked: tPages.reward > 0, progress: `${totalPagesCount} págs (${tPages.tier})`, reward: tPages.reward }
-      ];
     }
 
     function renderTrophies() {
@@ -1875,7 +1862,7 @@
       document.getElementById('diaryModal').style.display = 'flex';
     }
     function closeDiaryModal() { document.getElementById('diaryModal').style.display = 'none'; activeDiaryBook = null; }
-    function saveProgressEntry() { closeDiaryModal(); save(); alert('⚡ Progresso salvo!'); }
+    function saveProgressEntry() { closeDiaryModal(); save(); alert('⚡ Salvo!'); }
 
     document.getElementById('unifiedBookForm').addEventListener('submit', (e) => {
       e.preventDefault();
@@ -1917,7 +1904,7 @@
       }
 
       confetti({ particleCount: 70, spread: 80, origin: { y: 0.8 } });
-      e.target.reset(); toggleStockOptions(); save(); alert('⚡ Livro cadastrado com sucesso!');
+      e.target.reset(); toggleStockOptions(); save(); alert('⚡ Livro cadastrado!');
     });
 
     updateDatalists(); render(); renderTextsModule(); renderChallenges(); renderSeriesTab(); renderTrophies();
