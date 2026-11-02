@@ -1191,7 +1191,6 @@
 
     function parseBasePoints(typeVal) { return parseInt(typeVal) || 10; }
     
-    // TODAS AS CONQUISTAS E TROFÉUS ORIGINAIS RESTABELECIDOS
     function getTrophiesData() {
       const totalLidosCount = readBooks.length + customTexts.length;
       const totalPagesCount = readBooks.reduce((acc, b) => acc + (parseInt(b.pages) || 0), 0);
@@ -1655,7 +1654,7 @@
     function deleteSeriesRecord(seriesName) {
       if (confirm(`Remover registros da série "${seriesName}"?`)) {
         delete seriesStatuses[seriesName]; delete seriesCheckedBooks[seriesName];
-        [...readBooks, ...boughtBooks].forEach(b => { if (b.seriesName && b.seriesName.trim().toLowerCase() === seriesName.toLowerCase()) { b.isSeries = false; b.seriesName = ''; } });
+        [...readBooks, ...boughtBooks].forEach(b => { if (b.isSeries && b.seriesName && b.seriesName.trim().toLowerCase() === seriesName.toLowerCase()) { b.isSeries = false; b.seriesName = ''; } });
         save(); renderSeriesTab();
       }
     }
