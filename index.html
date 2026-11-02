@@ -17,36 +17,18 @@
       --danger: #ef4444;
       --success: #10b981;
       --reading: #3b82f6;
-      --abandoned: #64748b;
       --text: #f8fafc;
       --text-muted: #94a3b8;
-      --wood-dark: #1b110b;
       --wood-shelf: #2a1a0e;
       --wood-border: #422a1d;
     }
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-    }
-    .container { max-width: 1200px; width: 100%; }
-    header {
-      background: linear-gradient(135deg, #2e1065, #1e1b4b, #0f172a);
-      border: 1px solid rgba(139, 92, 246, 0.4);
-      padding: 24px;
-      border-radius: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 25px var(--accent-glow);
-    }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+    .container { max-width: 1250px; width: 100%; }
+    header { background: linear-gradient(135deg, #2e1065, #1e1b4b, #0f172a); border: 1px solid rgba(139, 92, 246, 0.4); padding: 24px; border-radius: 24px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 25px var(--accent-glow); }
     .header-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
     .stats-summary { display: flex; gap: 12px; flex-wrap: wrap; }
     .stat-badge { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 10px 16px; border-radius: 16px; text-align: center; backdrop-filter: blur(10px); }
     .stat-value { font-size: 1.5rem; font-weight: 800; }
-    .stat-value.negative { color: var(--danger) !important; }
     .stat-value.positive { color: var(--gold-bright); }
     
     .level-bar-container { margin-top: 18px; background: rgba(0,0,0,0.5); border-radius: 12px; height: 14px; width: 100%; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
@@ -58,13 +40,11 @@
     .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 8px 12px; font-size: 0.85rem; font-weight: bold; cursor: pointer; border-radius: 10px; transition: all 0.2s; }
     .tab-btn.active { background: var(--card-bg); color: var(--text); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
     .backup-btn { background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.4); color: #c084fc; padding: 6px 12px; font-size: 0.78rem; font-weight: bold; border-radius: 8px; cursor: pointer; }
-    .backup-btn:hover { background: rgba(139, 92, 246, 0.3); }
 
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
     .shelf-controls-panel { background: var(--card-bg); padding: 20px; border-radius: 16px; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 16px; }
-    
     .filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; align-items: center; }
     .filter-box { display: flex; flex-direction: column; gap: 4px; }
     .filter-box label { font-size: 0.75rem; color: var(--text-muted); margin: 0; }
@@ -72,92 +52,67 @@
 
     .grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 750px; margin: 0 auto; }
     
-    .shelf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
-
-    /* MODO LOMBADAS OTIMIZADO (20 LIVROS) */
+    /* ESTANTE LOMBADAS - 20 POR FILEIRA & COMPLETA NA TELA */
     .hogwarts-bookshelf {
       background: radial-gradient(circle at center, #1f140e 0%, #0d0805 100%);
       border: 12px solid var(--wood-border);
       border-radius: 16px;
-      padding: 25px 15px 10px 15px;
+      padding: 24px 15px 10px 15px;
       box-shadow: inset 0 0 50px rgba(0,0,0,0.9), 0 15px 35px rgba(0,0,0,0.8);
-      position: relative;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .shelf-row {
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-start;
+      display: grid;
+      grid-template-columns: repeat(20, 1fr);
       gap: 5px;
-      padding: 10px 10px 0 10px;
+      align-items: flex-end;
+      padding: 10px 5px 0 5px;
       margin-bottom: 25px;
       border-bottom: 16px solid var(--wood-shelf);
       box-shadow: 0 12px 15px rgba(0,0,0,0.7), inset 0 4px 6px rgba(255,255,255,0.05);
       min-height: 230px;
-      flex-wrap: nowrap;
-      overflow-x: auto;
     }
 
     .spine-book {
-      flex: 1 1 0;
-      min-width: 38px;
-      max-width: 52px;
-      height: 220px;
-      border-radius: 4px 6px 6px 4px;
+      width: 100%;
+      height: 215px;
+      border-radius: 4px 5px 5px 4px;
       position: relative;
       cursor: pointer;
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
-      box-shadow: -4px 0 8px rgba(0,0,0,0.5), inset 2px 0 4px rgba(255,255,255,0.2), inset -2px 0 4px rgba(0,0,0,0.6);
+      box-shadow: -3px 0 6px rgba(0,0,0,0.5), inset 2px 0 3px rgba(255,255,255,0.2), inset -2px 0 3px rgba(0,0,0,0.6);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 3px;
+      padding: 8px 2px;
       box-sizing: border-box;
       user-select: none;
     }
 
-    .spine-book:hover {
-      transform: translateY(-16px) scale(1.05);
-      box-shadow: -8px 15px 25px rgba(0,0,0,0.8), 0 0 15px var(--accent-glow);
-      z-index: 10;
-    }
+    .spine-book:hover { transform: translateY(-14px) scale(1.08); box-shadow: -6px 12px 20px rgba(0,0,0,0.8), 0 0 15px var(--accent-glow); z-index: 10; }
 
     .spine-title {
       writing-mode: vertical-rl;
       text-orientation: mixed;
       font-weight: 700;
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       letter-spacing: 0.5px;
       color: rgba(255, 255, 255, 0.95);
       text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-      max-height: 140px;
+      max-height: 135px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
     }
 
-    .spine-title.dark-text {
-      color: #0f172a !important;
-      text-shadow: none !important;
-    }
+    .spine-title.dark-text { color: #0f172a !important; text-shadow: none !important; }
+    .spine-deco-top, .spine-deco-bottom { width: 85%; height: 4px; border-top: 2px solid var(--gold-bright); border-bottom: 2px solid var(--gold-bright); opacity: 0.8; }
+    .spine-status-dot { width: 7px; height: 7px; border-radius: 50%; margin-bottom: 3px; }
 
-    .spine-deco-top, .spine-deco-bottom {
-      width: 80%;
-      height: 5px;
-      border-top: 2px solid var(--gold-bright);
-      border-bottom: 2px solid var(--gold-bright);
-      opacity: 0.8;
-    }
-
-    .spine-status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      margin-bottom: 4px;
-    }
-
-    /* ETIQUETAS PARA TEXTOS AVULSOS COM BORDAS COLORIDAS */
+    /* TEXTOS AVULSOS COM BORDAS COLORIDAS POR CATEGORIA */
     .labels-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
     .text-label-card {
       background: linear-gradient(135deg, #fdf6e2, #f5edda);
@@ -165,13 +120,15 @@
       border-radius: 12px;
       padding: 16px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      border: 3px solid #b8976a;
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s;
     }
-    .text-label-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+    .text-label-card:hover { transform: translateY(-4px); }
+    .text-label-category { font-size: 0.7rem; font-weight: 800; padding: 3px 8px; border-radius: 6px; display: inline-block; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; color: white; }
 
     .card { background-color: var(--card-bg); padding: 24px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 8px 30px rgba(0,0,0,0.4); margin-bottom: 24px; }
     h2 { margin-top: 0; color: #c084fc; font-size: 1.25rem; }
@@ -179,31 +136,17 @@
     input[type="text"], input[type="number"], input[type="date"], textarea, select { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #334155; background: #0b0f19; color: var(--text); box-sizing: border-box; font-family: inherit; }
     textarea { resize: vertical; min-height: 70px; }
     .inline-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .triple-fields { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
     .checkbox-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
     .checkbox-label { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; cursor: pointer; background: rgba(255,255,255,0.03); padding: 6px 10px; border-radius: 8px; }
     button.btn-primary { width: 100%; padding: 12px; background: linear-gradient(135deg, var(--accent), #6d28d9); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 14px var(--accent-glow); }
 
-    .shelf-item { background: #0b0f19; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; position: relative; }
-    .shelf-item:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-color: var(--accent); }
-    .shelf-cover-container { width: 100%; height: 200px; background: #1e293b; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; cursor: pointer; }
-    .shelf-cover-img { width: 100%; height: 100%; object-fit: cover; }
-    .shelf-info { padding: 10px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-    .shelf-title { font-weight: bold; font-size: 0.82rem; margin-bottom: 2px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; cursor: pointer; line-height: 1.15rem; }
-    .shelf-author { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .status-tag { position: absolute; top: 8px; left: 8px; font-size: 0.65rem; font-weight: bold; padding: 3px 6px; border-radius: 6px; text-transform: uppercase; box-shadow: 0 2px 5px rgba(0,0,0,0.4); z-index: 2; }
-    .tag-read { background: var(--success); color: white; }
-    .tag-reading { background: #e2e8f0; color: #0f172a; }
-    .tag-unread { background: #cbd5e1; color: #0f172a; }
-
-    .format-badge { font-size: 0.65rem; background: rgba(255,255,255,0.1); color: var(--gold-bright); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 4px; }
+    .format-badge { font-size: 0.65rem; background: rgba(255,255,255,0.1); color: var(--gold-bright); padding: 2px 6px; border-radius: 4px; display: inline-block; }
     .diary-entry-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 8px 10px; border-radius: 8px; margin-top: 6px; font-size: 0.8rem; }
     
     .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); justify-content: center; align-items: center; z-index: 100; }
     .modal-content { background: var(--card-bg); padding: 24px; border-radius: 20px; max-width: 560px; width: 90%; border: 1px solid var(--accent); max-height: 85vh; overflow-y: auto; }
     
     details > summary { cursor: pointer; color: var(--accent); font-weight: bold; outline: none; }
-    details > summary:hover { color: #c084fc; }
   </style>
 </head>
 <body>
@@ -240,9 +183,7 @@
           </div>
         </div>
       </div>
-      <div class="level-bar-container">
-        <div class="level-bar-fill" id="levelBar"></div>
-      </div>
+      <div class="level-bar-container"><div class="level-bar-fill" id="levelBar"></div></div>
     </header>
 
     <div class="tab-navigation">
@@ -253,13 +194,13 @@
         <button class="tab-btn" onclick="switchTab('readingDiaryTab', this)">📖 Diário de Leitura</button>
         <button class="tab-btn" onclick="switchTab('challengesTab', this)">🏆 Desafios</button>
         <button class="tab-btn" onclick="switchTab('seriesTab', this)">📚 Séries</button>
-        <button class="tab-btn" onclick="switchTab('goalTab', this)">🎯 Meta Anual</button>
+        <button class="tab-btn" onclick="switchTab('goalTab', this)">🎯 Metas Literárias</button>
         <button class="tab-btn" onclick="switchTab('trophyTab', this)">🏅 Sala de Troféus</button>
-        <button class="tab-btn" onclick="switchTab('pointsTab', this)" style="color: var(--gold-bright);">⚡ Pontuação & Sorteio</button>
+        <button class="tab-btn" onclick="switchTab('pointsTab', this)">💡 Pontuação & Dicas</button>
       </div>
       <div class="backup-group">
-        <button class="backup-btn" onclick="exportBackup()" title="Baixar arquivo de backup">💾 Exportar</button>
-        <button class="backup-btn" onclick="triggerImport()" title="Restaurar de um arquivo">📂 Importar</button>
+        <button class="backup-btn" onclick="exportBackup()">💾 Exportar</button>
+        <button class="backup-btn" onclick="triggerImport()">📂 Importar</button>
         <input type="file" id="importFile" style="display:none" accept=".json" onchange="importBackup(event)">
       </div>
     </div>
@@ -273,17 +214,15 @@
             <label>Título do Livro</label>
             <input type="text" id="uniTitle" required placeholder="Ex: Dom Casmurro">
 
-            <label>Autor(es) Principal(is) (Até 3 autores)</label>
-            <div class="triple-fields">
-              <input type="text" id="uniAuthor1" list="authorsDatalist" required placeholder="Autor 1 (Obrigatório)" autocomplete="off">
+            <!-- ATÉ 3 AUTORES & ORGANIZADOR -->
+            <label>Autor(es) / Organizador(a)</label>
+            <div class="inline-fields">
+              <input type="text" id="uniAuthor1" list="authorsDatalist" required placeholder="Autor 1 Principal *" autocomplete="off">
               <input type="text" id="uniAuthor2" list="authorsDatalist" placeholder="Autor 2 (Opcional)" autocomplete="off">
-              <input type="text" id="uniAuthor3" list="authorsDatalist" placeholder="Autor 3 (Opcional)" autocomplete="off">
             </div>
-
-            <div style="margin-top: 6px;">
-              <label class="checkbox-label" style="display:inline-flex; width:auto;">
-                <input type="checkbox" id="uniIsOrganizedBy"> 📚 Coletânea / Organizado por (Org.)
-              </label>
+            <div class="inline-fields" style="margin-top: 6px;">
+              <input type="text" id="uniAuthor3" list="authorsDatalist" placeholder="Autor 3 (Opcional)" autocomplete="off">
+              <label class="checkbox-label"><input type="checkbox" id="uniIsOrganized"> Marcar como "Org. por"</label>
             </div>
 
             <div class="inline-fields">
@@ -352,8 +291,9 @@
               </select>
             </div>
 
+            <!-- GÊNEROS EM ORDEM ALFABÉTICA -->
             <div id="fictionSubGroup_unifiedBookForm" style="margin:10px 0; background:rgba(139,92,246,0.1); padding:10px; border-radius:10px; border:1px solid rgba(139,92,246,0.3);">
-              <label style="margin-top:0; color:#c084fc;">Gênero Literário (Em ordem alfabética)</label>
+              <label style="margin-top:0; color:#c084fc;">Gênero Literário (Ficção)</label>
               <select id="uniFictionGenre">
                 <option value="Clássicos">Clássicos</option>
                 <option value="Comédia">Comédia</option>
@@ -373,11 +313,11 @@
             <label>Editora</label>
             <input type="text" id="uniPublisher" list="publishersDatalist" placeholder="Ex: Companhia das Letras..." autocomplete="off">
 
-            <label>Tradutor(es) (Até 3 tradutores)</label>
-            <div class="triple-fields">
-              <input type="text" id="uniTranslator1" list="translatorsDatalist" placeholder="Tradutor 1" autocomplete="off">
-              <input type="text" id="uniTranslator2" list="translatorsDatalist" placeholder="Tradutor 2" autocomplete="off">
-              <input type="text" id="uniTranslator3" list="translatorsDatalist" placeholder="Tradutor 3" autocomplete="off">
+            <!-- ATÉ 3 TRADUTORES -->
+            <label>Tradutor(es)</label>
+            <div class="inline-fields">
+              <input type="text" id="uniTranslator1" list="translatorsDatalist" placeholder="Tradutor 1 (Opcional)" autocomplete="off">
+              <input type="text" id="uniTranslator2" list="translatorsDatalist" placeholder="Tradutor 2 (Opcional)" autocomplete="off">
             </div>
 
             <div class="inline-fields" style="margin-top: 10px;">
@@ -385,11 +325,11 @@
                 <label>⭐ Avaliação (Estrelas)</label>
                 <select id="uniRating">
                   <option value="0">Sem avaliação</option>
-                  <option value="1">⭐ 1 Estrela (Ruim)</option>
-                  <option value="2">⭐⭐ 2 Estrelas (Regular)</option>
-                  <option value="3">⭐⭐⭐ 3 Estrelas (Bom)</option>
-                  <option value="4">⭐⭐⭐⭐ 4 Estrelas (Ótimo)</option>
-                  <option value="5">⭐⭐⭐⭐⭐ 5 Estrelas (Excelente)</option>
+                  <option value="1">⭐ 1 Estrela</option>
+                  <option value="2">⭐⭐ 2 Estrelas</option>
+                  <option value="3">⭐⭐⭐ 3 Estrelas</option>
+                  <option value="4">⭐⭐⭐⭐ 4 Estrelas</option>
+                  <option value="5">⭐⭐⭐⭐⭐ 5 Estrelas</option>
                 </select>
               </div>
               <div style="display: flex; align-items: center; justify-content: center; padding-top: 20px;">
@@ -416,7 +356,7 @@
             <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; margin-top: 10px;">
               <label style="margin-top:0;"><input type="checkbox" id="uniIsSeries" onchange="toggleSeriesInputs('unifiedBookForm')"> Faz parte de série?</label>
               <div id="seriesFields_unifiedBookForm" style="display:none; margin-top: 8px;">
-                <input type="text" id="uniSeriesName" list="seriesDatalist" placeholder="Nome da Série..." oninput="autoFillSeriesTotal('uniSeriesName', 'uniSeriesTotal')" autocomplete="off">
+                <input type="text" id="uniSeriesName" list="seriesDatalist" placeholder="Nome da Série..." autocomplete="off">
                 <div class="inline-fields" style="margin-top: 6px;">
                   <input type="number" id="uniSeriesVol" placeholder="Vol. Atual">
                   <input type="number" id="uniSeriesTotal" placeholder="Total Vol.">
@@ -437,7 +377,7 @@
       </div>
     </div>
 
-    <!-- ABA 2: ESTANTE VIRTUAL -->
+    <!-- ABA 2: ESTANTE VIRTUAL (MODO LOMBADAS EXCLUSIVO) -->
     <div id="shelfTab" class="tab-content">
       <div class="shelf-controls-panel">
         <div class="filters-grid">
@@ -461,15 +401,16 @@
             </select>
           </div>
 
+          <!-- FILTRO 2 COM LENDO, RELEITURA E ABANDONADO -->
           <div class="filter-box">
             <label>Filtro 2: Status</label>
             <select id="filter2" onchange="render()">
               <option value="all">Todos</option>
-              <option value="lidos">Lidos / Relidos</option>
+              <option value="lidos">Lidos</option>
               <option value="nao_lidos">Não lidos</option>
-              <option value="Lendo">Lendo</option>
-              <option value="Relendo">Relendo</option>
-              <option value="Abandonado">Abandonado</option>
+              <option value="lendo">Lendo</option>
+              <option value="relendo">Relendo</option>
+              <option value="abandonado">Abandonado</option>
             </select>
           </div>
 
@@ -498,8 +439,9 @@
             </select>
           </div>
 
+          <!-- RENOMEADO PARA FILTRO 5: GÊNERO -->
           <div class="filter-box">
-            <label>Filtro 5: Gênero</label>
+            <label>Filtro 5: Gênero (Ficção)</label>
             <select id="filterGenre" onchange="render()">
               <option value="all">🎭 Todos os Gêneros</option>
               <option value="Clássicos">Clássicos</option>
@@ -513,18 +455,6 @@
               <option value="Romance">Romance</option>
               <option value="Suspense">Suspense</option>
               <option value="Terror">Terror</option>
-              <option value="Outros">Outros</option>
-            </select>
-          </div>
-
-          <div class="filter-box" id="filter5Container" style="display: none;">
-            <label>Subcategoria Não-Ficção</label>
-            <select id="filter5" onchange="render()">
-              <option value="all">Todos</option>
-              <option value="Biografia">Biografias / Memórias</option>
-              <option value="Ensaio">Ensaio / Filosofia / Sociedade</option>
-              <option value="Eventos">Eventos Casos Reais</option>
-              <option value="História">História</option>
               <option value="Outros">Outros</option>
             </select>
           </div>
@@ -552,7 +482,7 @@
 
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px; flex-wrap: wrap; gap: 8px;">
-          <h2 style="margin:0;">🏰 Estante Virtual - Modo Lombadas</h2>
+          <h2 style="margin:0;">🏰 Estante Virtual de Hogwarts</h2>
           <div id="shelfCountDisplay" style="background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); padding: 6px 14px; border-radius: 12px; font-size: 0.9rem; color: #c084fc; font-weight: bold;">Mostrando 0 livros</div>
         </div>
 
@@ -560,12 +490,11 @@
       </div>
     </div>
 
-    <!-- ABA 3: TEXTOS AVULSOS EDITÁVEIS COM BORDAS COLORIDAS -->
+    <!-- ABA 3: TEXTOS AVULSOS -->
     <div id="textsTab" class="tab-content">
       <div class="card">
-        <h2 id="textFormTitle">📜 Cadastrar Texto Avulso</h2>
-        <form id="textForm" onsubmit="handleTextSubmit(event)">
-          <input type="hidden" id="txtEditIndex" value="-1">
+        <h2>📜 Cadastrar Texto Avulso</h2>
+        <form id="textForm" onsubmit="addTextItem(event)">
           <div class="inline-fields">
             <div>
               <label>Título do Texto</label>
@@ -611,10 +540,7 @@
           <label>Comentário ou Notas</label>
           <textarea id="txtComment" placeholder="O que achou deste texto..."></textarea>
 
-          <div style="display:flex; gap:10px; margin-top: 14px;">
-            <button type="submit" class="btn-primary" id="btnSaveText">⚡ Salvar Texto Avulso</button>
-            <button type="button" class="btn-primary" id="btnCancelEditText" onclick="resetTextForm()" style="display:none; background:transparent; border:1px solid #334155;">Cancelar Edição</button>
-          </div>
+          <button type="submit" class="btn-primary" style="margin-top: 14px;">⚡ Salvar Texto Avulso</button>
         </form>
       </div>
 
@@ -644,9 +570,9 @@
       <div class="card">
         <h2>📖 Diário de Leitura (Livros em Andamento & Acompanhamento)</h2>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
-          Acompanhe aqui o andamento dos seus livros marcados como <strong>Lendo</strong> ou <strong>Relendo</strong>. Clique em qualquer livro para atualizar a página atual ou registrar novos capítulos!
+          Acompanhe aqui o andamento dos seus livros marcados como <strong>Lendo</strong> ou <strong>Relendo</strong>.
         </p>
-        <div class="shelf-grid" id="readingDiaryGallery"></div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px;" id="readingDiaryGallery"></div>
       </div>
     </div>
 
@@ -666,17 +592,16 @@
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
           <h2 style="margin:0;">📚 Controle de Séries Literárias</h2>
-          <button class="backup-btn" onclick="cleanOrphanSeries()" title="Remover séries que não possuem livros">🧹 Limpar Séries Órfãs</button>
+          <button class="backup-btn" onclick="cleanOrphanSeries()">🧹 Limpar Séries Órfãs</button>
         </div>
-        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Acompanhe o andamento das séries cadastradas. Organizadas por status (Em andamento ➔ Hiato ➔ Concluída ➔ Abandonada):</p>
         <div id="seriesTrackingList" style="display:flex; flex-direction:column; gap:16px;"></div>
       </div>
     </div>
 
-    <!-- ABA 7: META DE LEITURA (LIVRE E PLANEJADA) -->
+    <!-- ABA 7: METAS LITERÁRIAS (PLANEJAMENTO ANTECIPADO) -->
     <div id="goalTab" class="tab-content">
       <div class="card" style="margin-bottom: 24px;">
-        <h2>🎯 Desafio e Meta Anual</h2>
+        <h2>🎯 Metas Literárias Anuais</h2>
         <div class="inline-fields" style="align-items: flex-end;">
           <div>
             <label>Ano da Meta</label>
@@ -697,110 +622,118 @@
           <div id="goalRewardStatus" style="font-weight:bold; font-size:0.9rem; color:var(--gold-bright);"></div>
         </div>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
-          Monte seu planejamento anual de leitura! Escolha os livros antecipadamente. Os pontos das missões entram conforme as leituras forem sendo finalizadas.
+          Planeje os livros da sua meta antes de ler! Cada categoria cumprida concede <strong>+15 moedas</strong>, e concluir o desafio total garante um bônus extra de <strong>+150 moedas</strong>!
         </p>
-        <div id="missionsList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;"></div>
-      </div>
 
-      <div class="card">
-        <h2>📚 Associar Livros à Meta (Planejamento)</h2>
-        <p style="font-size:0.8rem; color:var(--text-muted);">Pesquise um livro do seu acervo e selecione em qual categoria da meta ele vai se encaixar:</p>
-        
-        <div class="inline-fields" style="align-items: flex-end; margin-bottom: 16px;">
-          <div>
-            <label>Pesquisar / Selecionar Livro</label>
-            <select id="selectBookForGoal"></select>
+        <!-- ADICIONAR LIVRO DA META -->
+        <div style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.08);">
+          <h3 style="font-size: 0.95rem; margin-top:0; color: #c084fc;">📌 Planejar Livro na Meta</h3>
+          <div class="inline-fields">
+            <div>
+              <label>Buscar Título do Livro</label>
+              <input type="text" id="goalBookSearchInput" placeholder="Digite o título do livro..." oninput="filterGoalBookOptions()">
+              <select id="goalBookSelect" style="margin-top: 6px;"></select>
+            </div>
+            <div>
+              <label>Associar à Categoria do Desafio</label>
+              <select id="goalCategorySelect">
+                <option value="0">Até 10 Livros Padrão</option>
+                <option value="1">1 Conto</option>
+                <option value="2">1 HQ / Mangá</option>
+                <option value="3">a. Livro escrito por uma mulher</option>
+                <option value="4">b. Autor(a) inédito(a)</option>
+                <option value="5">c. Nacional, latino ou PT</option>
+                <option value="6">d. Livro em inglês</option>
+                <option value="7">e. Livro de não ficção</option>
+                <option value="8">f. Livro de série</option>
+                <option value="9">g. Livro físico</option>
+                <option value="10">h. Livro digital</option>
+                <option value="11">i. Livro avulso</option>
+                <option value="12">j. Livro do Stephen King</option>
+              </select>
+            </div>
           </div>
-          <div>
-            <label>Associar à Missão da Meta</label>
-            <select id="selectMissionForGoal">
-              <option value="0">1. Até 10 Livros Padrão</option>
-              <option value="1">2. 1 Conto</option>
-              <option value="2">3. 1 HQ / Mangá</option>
-              <option value="3">4. Escrito por uma mulher</option>
-              <option value="4">5. Autor(a) inédito(a)</option>
-              <option value="5">6. Nacional, latino ou PT</option>
-              <option value="6">7. Livro em inglês</option>
-              <option value="7">8. Livro de Não-Ficção</option>
-              <option value="8">9. Livro de Série</option>
-              <option value="9">10. Livro Físico</option>
-              <option value="10">11. Livro Digital</option>
-              <option value="11">12. Livro Avulso</option>
-              <option value="12">13. Livro do Stephen King</option>
-            </select>
-          </div>
+          <button class="btn-primary" onclick="addPlannedBookToGoal()" style="margin-top: 12px; padding: 10px;">➕ Vincular Livro à Meta</button>
         </div>
-        <button class="btn-primary" onclick="addBookToCurrentGoal()" style="padding: 10px; margin-bottom: 16px;">➕ Vincular Livro à Meta</button>
 
-        <div id="goalAssignedBooksList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        <div id="missionsList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;"></div>
       </div>
     </div>
 
-    <!-- ABA 8: SALA DE TROFÉUS (NÍVEIS DINÂMICOS) -->
+    <!-- ABA 8: SALA DE TROFÉUS (PROGRESSIVA POR NÍVEIS) -->
     <div id="trophyTab" class="tab-content">
       <div class="card">
-        <h2>🏅 Sala de Troféus Dinâmica & Níveis de Conquista</h2>
+        <h2>🏅 Sala de Troféus & Níveis de Conquista</h2>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
-          Conquiste troféus que evoluem em níveis (Bronze ➔ Prata ➔ Ouro) conforme sua jornada avança!
+          Cada conquista possui níveis de evolução (Bronze ➔ Prata ➔ Ouro ➔ Diamante). Conforme suas leituras avançam, os troféus evoluem e continuam te premiando com mais moedas!
         </p>
         <div id="trophiesContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;"></div>
       </div>
     </div>
 
-    <!-- ABA 9: PONTUAÇÃO & SORTEIO (NOVA ABA) -->
+    <!-- ABA 9: PONTUAÇÃO & DICAS (NOVA ABA) -->
     <div id="pointsTab" class="tab-content">
-      <!-- SORTEADOR -->
-      <div class="card" style="background: linear-gradient(135deg, #1e1b4b, #2e1065); border: 1px solid var(--gold-bright);">
+      <div class="card">
         <h2>🎲 Sorteador de Próxima Leitura</h2>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Indecisa sobre o que ler a seguir? Deixe a sorte escolher um livro da sua pilha "Não Lido"!</p>
-        
-        <div id="lotteryResult" style="display:none; margin: 16px 0; padding: 16px; background: rgba(0,0,0,0.4); border-radius: 12px; border: 1px solid var(--gold-bright); text-align: center;">
-          <div style="font-size:0.8rem; color:var(--gold-bright); text-transform:uppercase; font-weight:bold;">🎉 O Livro Sorteado foi:</div>
-          <div id="lotteryBookTitle" style="font-size: 1.3rem; font-weight: 800; color: #fff; margin: 4px 0;">-</div>
-          <div id="lotteryBookAuthor" style="font-size: 0.9rem; color: var(--text-muted);">-</div>
-        </div>
-
-        <button class="btn-primary" onclick="drawRandomBook()" style="background: linear-gradient(135deg, var(--gold-bright), #d97706); color: #000; font-weight: 800;">🎲 Sortear Livro Aleatório da Fila</button>
+        <p style="font-size:0.85rem; color:var(--text-muted);">Está indecisa sobre qual livro começar? Deixe a estante decidir para você!</p>
+        <button class="btn-primary" onclick="sortearProximaLeitura()" style="width:auto; padding: 10px 20px; font-size: 0.95rem;">🎲 Sortear Livro Não Lido</button>
+        <div id="sorteioResult" style="margin-top: 14px;"></div>
       </div>
 
-      <!-- GANHA PÃO LITERÁRIO (TOP 5) -->
       <div class="card">
-        <h2>💡 Ganha-Pão Literário (Top 5 Livros que Mais Dão Pontos)</h2>
-        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Confira os 5 livros da sua fila que oferecem o maior potencial de pontuação acumulada se lidos agora:</p>
-        <div id="topPointsBooksList" style="display:flex; flex-direction:column; gap:10px;"></div>
+        <h2>🔥 Top 5 Livros que Mais Dão Pontos na Fila</h2>
+        <p style="font-size:0.85rem; color:var(--text-muted);">Estes são os livros da sua pilha "Não Lido" que mais vão alavancar o seu saldo quando você ler:</p>
+        <div id="topValuableBooksContainer" style="display:flex; flex-direction:column; gap:10px;"></div>
       </div>
 
-      <!-- EXTRATO DAS REGRAS DE PONTUAÇÃO -->
       <div class="card">
-        <h2>⚡ Tabela de Regras & Pontuação Transparente</h2>
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px; font-size:0.85rem;">
-          <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
-            <h3 style="color:var(--accent); margin-top:0; font-size:1rem;">📘 Categorias Base</h3>
-            <ul style="padding-left:18px; margin:0; line-height:1.6rem; color:var(--text-muted);">
-              <li>Livro Padrão: <strong>+10 pts</strong></li>
-              <li>Livro Conto: <strong>+8 pts</strong></li>
-              <li>Crônicas, peças, poesia: <strong>+3 pts</strong></li>
-              <li>Quadrinhos / HQs: <strong>+5 pts</strong></li>
-              <li>Não-Ficção: <strong>+12 pts</strong></li>
-              <li>Em Inglês: <strong>+13 pts</strong></li>
-              <li>Língua Estrangeira: <strong>+14 pts</strong></li>
-              <li>Nacional / Latino / PT: <strong>+15 pts</strong></li>
-            </ul>
-          </div>
-
-          <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
-            <h3 style="color:var(--pink); margin-top:0; font-size:1rem;">🎁 Bônus Adicionais</h3>
-            <ul style="padding-left:18px; margin:0; line-height:1.6rem; color:var(--text-muted);">
-              <li>Autora Mulher: <strong>+5 pts</strong></li>
-              <li>Latino / PT / Nacional: <strong>+5 pts</strong></li>
-              <li>Autor Inédito: <strong>+5 pts</strong></li>
-              <li>A cada 1.000 Páginas Lidas: <strong>+50 pts</strong></li>
-              <li>Marcar Livro como Doado: <strong>+20 pts</strong></li>
-              <li>Concluir Último Vol. de Série: <strong>+30 pts</strong></li>
-              <li>Concluir Meta Anual: <strong>+150 pts</strong></li>
-            </ul>
+        <h2>💡 Tabela Oficial de Pontuação</h2>
+        <div style="font-size: 0.85rem; line-height: 1.6rem; color: var(--text);">
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <h3 style="color:var(--accent); font-size: 0.95rem;">📖 Categorias de Livros (Base)</h3>
+              <ul>
+                <li><strong>Livro Padrão:</strong> +10 moedas</li>
+                <li><strong>Livro Conto:</strong> +8 moedas</li>
+                <li><strong>Crônicas, Peças & Poesia:</strong> +3 moedas</li>
+                <li><strong>Quadrinhos / Mangás:</strong> +5 moedas</li>
+                <li><strong>Livros de Não-Ficção:</strong> +12 moedas</li>
+                <li><strong>Livros em Inglês:</strong> +13 moedas</li>
+                <li><strong>Livros Nacionais / Latinos / PT:</strong> +15 moedas</li>
+                <li><strong>Livros em Língua Estrangeira:</strong> +14 moedas</li>
+              </ul>
+            </div>
+            <div>
+              <h3 style="color:var(--gold-bright); font-size: 0.95rem;">⚡ Bônus Acumulativos & Páginas</h3>
+              <ul>
+                <li><strong>Autora Mulher:</strong> +5 moedas</li>
+                <li><strong>Autor Inédito:</strong> +5 moedas</li>
+                <li><strong>Nacional / Latino extra:</strong> +5 moedas</li>
+                <li><strong>Bônus de Páginas:</strong> +50 moedas a cada 1.000 páginas lidas acumuladas</li>
+                <li><strong>Conclusão de Série:</strong> +30 moedas ao ler o último volume</li>
+                <li><strong>Doação de Livro:</strong> +20 moedas</li>
+              </ul>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE VISUALIZAÇÃO DE CAPA & OPÇÕES DO LIVRO (MODO LOMBADAS) -->
+  <div class="modal" id="bookPreviewModal">
+    <div class="modal-content" style="text-align: center;">
+      <div style="display:flex; justify-content:flex-end;">
+        <button onclick="closeBookPreviewModal()" style="background:none; border:none; color:var(--text); font-size:1.3rem; cursor:pointer;">✕</button>
+      </div>
+      <div id="previewCoverContainer" style="margin: 10px auto; width: 180px; height: 270px; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.7);"></div>
+      <h2 id="previewTitle" style="margin: 10px 0 4px 0; color: var(--gold-bright);"></h2>
+      <div id="previewAuthor" style="font-size: 0.9rem; color: var(--text-muted);"></div>
+      <div id="previewDetails" style="font-size: 0.8rem; margin: 12px 0; background: rgba(255,255,255,0.04); padding: 10px; border-radius: 10px; text-align: left; display: flex; flex-direction: column; gap: 4px;"></div>
+      
+      <div style="display:flex; gap: 10px; margin-top: 16px;">
+        <button class="btn-primary" id="previewBtnEdit" style="background: #0284c7;">📝 Editar Cadastro</button>
+        <button class="btn-primary" id="previewBtnDiary" style="background: linear-gradient(135deg, var(--accent), #6d28d9);">📖 Abrir Diário</button>
       </div>
     </div>
   </div>
@@ -867,19 +800,54 @@
     </div>
   </div>
 
-  <!-- MODAL DE INTERAÇÃO DA LOMBADA (DETALHES / OPÇÕES) -->
-  <div class="modal" id="bookOptionsModal">
-    <div class="modal-content" style="text-align: center;">
-      <div style="display:flex; justify-content:flex-end;"><button onclick="closeBookOptionsModal()" style="background:none; border:none; color:var(--text); font-size:1.2rem; cursor:pointer;">✕</button></div>
-      <div id="bookOptionsCoverContainer" style="margin: 0 auto 16px auto; width: 160px; height: 240px; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.6);"></div>
-      <h2 id="bookOptionsTitle" style="margin:0 0 4px 0; color:var(--text);"></h2>
-      <div id="bookOptionsAuthor" style="color:var(--text-muted); font-size:0.9rem; margin-bottom:8px;"></div>
-      <div id="bookOptionsCategoryBadge" style="margin-bottom:16px;"></div>
+  <!-- MODAL DE EDIÇÃO DA ABA TEXTOS AVULSOS -->
+  <div class="modal" id="editTextModal">
+    <div class="modal-content">
+      <h2>✏️ Editar Texto Avulso</h2>
+      <form id="editTextForm" onsubmit="saveEditedTextItem(event)">
+        <label>Título do Texto</label>
+        <input type="text" id="editTxtTitle" required>
 
-      <div style="display:flex; flex-direction:column; gap:10px;">
-        <button class="btn-primary" id="btnOptEdit" style="background: linear-gradient(135deg, var(--accent), #6d28d9);">✏️ Editar Cadastro</button>
-        <button class="btn-primary" id="btnOptDiary" style="background: linear-gradient(135deg, #0284c7, #0369a1);">📖 Abrir Diário de Leitura</button>
-      </div>
+        <label>Autor(a)</label>
+        <input type="text" id="editTxtAuthor" list="authorsDatalist" required autocomplete="off">
+
+        <div class="inline-fields">
+          <div>
+            <label>Páginas</label>
+            <input type="number" id="editTxtPages" required>
+          </div>
+          <div>
+            <label>Tipo de Texto</label>
+            <select id="editTxtCategory">
+              <option value="Conto">Conto</option>
+              <option value="Crônica">Crônica</option>
+              <option value="Peça">Peça</option>
+              <option value="HQ">HQ</option>
+              <option value="Poesia">Poesia</option>
+              <option value="Ensaio">Ensaio</option>
+              <option value="Discurso">Discurso</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="inline-fields">
+          <div>
+            <label>Livro / Coletânea de Origem</label>
+            <input type="text" id="editTxtSourceBook">
+          </div>
+          <div>
+            <label>Data da Leitura</label>
+            <input type="date" id="editTxtDate">
+          </div>
+        </div>
+
+        <label>Comentário ou Notas</label>
+        <textarea id="editTxtComment"></textarea>
+
+        <button type="submit" class="btn-primary" style="margin-top: 14px;">💾 Salvar Alterações</button>
+        <button type="button" class="btn-primary" onclick="closeEditTextModal()" style="background: transparent; border: 1px solid #334155; margin-top: 8px;">Cancelar</button>
+      </form>
     </div>
   </div>
 
@@ -891,20 +859,18 @@
         <label>Título</label>
         <input type="text" id="editTitle" required>
 
-        <label>Autor(es) Principal(is)</label>
-        <div class="triple-fields">
+        <!-- ATÉ 3 AUTORES NA EDIÇÃO -->
+        <label>Autor(es) / Organizador(a)</label>
+        <div class="inline-fields">
           <input type="text" id="editAuthor1" list="authorsDatalist" required autocomplete="off">
           <input type="text" id="editAuthor2" list="authorsDatalist" autocomplete="off">
+        </div>
+        <div class="inline-fields" style="margin-top:6px;">
           <input type="text" id="editAuthor3" list="authorsDatalist" autocomplete="off">
+          <label class="checkbox-label"><input type="checkbox" id="editIsOrganized"> Marcar como "Org. por"</label>
         </div>
 
-        <div style="margin-top: 6px;">
-          <label class="checkbox-label" style="display:inline-flex; width:auto;">
-            <input type="checkbox" id="editIsOrganizedBy"> 📚 Coletânea / Organizado por (Org.)
-          </label>
-        </div>
-
-        <div class="inline-fields">
+        <div class="inline-fields" style="margin-top:10px;">
           <div>
             <label>Páginas Totais</label>
             <input type="number" id="editPages" required>
@@ -977,7 +943,7 @@
         </div>
 
         <div id="fictionSubGroup_editForm" style="margin-bottom:10px; background:rgba(139,92,246,0.1); padding:10px; border-radius:10px; border:1px solid rgba(139,92,246,0.3);">
-          <label style="margin-top:0; color:#c084fc;">Gênero Literário (Em ordem alfabética)</label>
+          <label style="margin-top:0; color:#c084fc;">Gênero Literário (Ficção)</label>
           <select id="editFictionGenre">
             <option value="Clássicos">Clássicos</option>
             <option value="Comédia">Comédia</option>
@@ -998,22 +964,21 @@
         <input type="text" id="editPublisher" list="publishersDatalist" autocomplete="off">
 
         <label>Tradutor(es)</label>
-        <div class="triple-fields">
+        <div class="inline-fields">
           <input type="text" id="editTranslator1" list="translatorsDatalist" autocomplete="off">
           <input type="text" id="editTranslator2" list="translatorsDatalist" autocomplete="off">
-          <input type="text" id="editTranslator3" list="translatorsDatalist" autocomplete="off">
         </div>
 
-        <div class="inline-fields" style="margin-top: 10px;">
+        <div class="inline-fields" style="margin-top:10px;">
           <div>
             <label>⭐ Avaliação (Estrelas)</label>
             <select id="editRating">
               <option value="0">Sem avaliação</option>
-              <option value="1">⭐ 1 Estrela (Ruim)</option>
-              <option value="2">⭐⭐ 2 Estrelas (Regular)</option>
-              <option value="3">⭐⭐⭐ 3 Estrelas (Bom)</option>
-              <option value="4">⭐⭐⭐⭐ 4 Estrelas (Ótimo)</option>
-              <option value="5">⭐⭐⭐⭐⭐ 5 Estrelas (Excelente)</option>
+              <option value="1">⭐ 1 Estrela</option>
+              <option value="2">⭐⭐ 2 Estrelas</option>
+              <option value="3">⭐⭐⭐ 3 Estrelas</option>
+              <option value="4">⭐⭐⭐⭐ 4 Estrelas</option>
+              <option value="5">⭐⭐⭐⭐⭐ 5 Estrelas</option>
             </select>
           </div>
           <div style="display: flex; align-items: center; justify-content: center; padding-top: 20px;">
@@ -1037,7 +1002,7 @@
         <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; margin-top: 10px;">
           <label style="margin-top:0;"><input type="checkbox" id="editIsSeries" onchange="toggleEditSeriesInputs()"> Faz parte de uma Série?</label>
           <div id="editSeriesFields" style="display:none; margin-top: 8px;">
-            <input type="text" id="editSeriesName" list="seriesDatalist" placeholder="Nome da Série..." oninput="autoFillSeriesTotal('editSeriesName', 'editSeriesTotal')" autocomplete="off">
+            <input type="text" id="editSeriesName" list="seriesDatalist" placeholder="Nome da Série..." autocomplete="off">
             <div class="inline-fields" style="margin-top: 6px;">
               <input type="number" id="editSeriesVol" placeholder="Vol. Atual">
               <input type="number" id="editSeriesTotal" placeholder="Total Vol.">
@@ -1075,11 +1040,12 @@
     let boughtBooks = JSON.parse(localStorage.getItem('my_bought_books')) || [];
     let donatedBooks = JSON.parse(localStorage.getItem('my_donated_books')) || [];
     let customTexts = JSON.parse(localStorage.getItem('my_custom_texts')) || [];
-    let customGoals = JSON.parse(localStorage.getItem('my_custom_goals')) || { "2026": { rewarded: false, assignedBooks: [] } };
+    let customGoals = JSON.parse(localStorage.getItem('my_custom_goals')) || { "2026": { rewarded: false, plannedBooks: [] } };
     let seriesStatuses = JSON.parse(localStorage.getItem('my_series_statuses')) || {};
     let seriesCheckedBooks = JSON.parse(localStorage.getItem('my_series_checked_books')) || {};
 
     let currentTextCategoryFilter = 'all';
+    let activeEditingTextIndex = null;
 
     let defaultChallenges = [
       { id: 'austen', title: 'Desafio Jane Austen (Romances e Obras Inacabadas)', books: [
@@ -1112,7 +1078,6 @@
 
     let activeEditBook = null;
     let activeDiaryBook = null;
-    let activeOptionBook = null;
 
     const textCategoryColors = {
       'Conto': '#0284c7',
@@ -1152,13 +1117,6 @@
             if (parsed.customGoals) customGoals = parsed.customGoals;
             if (parsed.seriesStatuses) seriesStatuses = parsed.seriesStatuses;
             if (parsed.seriesCheckedBooks) seriesCheckedBooks = parsed.seriesCheckedBooks;
-            if (parsed.customChallenges) {
-              parsed.customChallenges.forEach(sc => {
-                let existing = customChallenges.find(cc => cc.title === sc.title);
-                if (existing) existing.books = sc.books;
-                else customChallenges.push(sc);
-              });
-            }
             save();
             alert('🎉 Backup importado com sucesso!');
           } catch (err) { alert('❌ Erro ao ler o arquivo de backup.'); }
@@ -1189,47 +1147,14 @@
       }
     }
 
-    function onFilter4Change() {
-      const f4 = document.getElementById('filter4').value;
-      const f5Container = document.getElementById('filter5Container');
-      if (f4 === 'nao_ficcao') {
-        f5Container.style.display = 'flex';
-      } else {
-        f5Container.style.display = 'none';
-        document.getElementById('filter5').value = 'all';
-      }
-      render();
-    }
-
-    function getCombinedAuthors(b) {
-      let arr = [];
-      if (b.authorsList && Array.isArray(b.authorsList) && b.authorsList.length > 0) {
-        arr = b.authorsList.filter(a => a && a.trim());
-      } else if (b.author) {
-        arr = [b.author];
-      }
-      let str = arr.join(', ');
-      if (b.isOrganizedBy) str = `${str} (Org.)`;
-      return str || 'Autor não informado';
-    }
-
-    function getCombinedTranslators(b) {
-      if (b.translatorsList && Array.isArray(b.translatorsList) && b.translatorsList.length > 0) {
-        return b.translatorsList.filter(t => t && t.trim()).join(', ');
-      }
-      return b.translator || '';
-    }
+    function onFilter4Change() { render(); }
 
     function updateDatalists() {
       const authorsSet = new Set(), seriesMap = {}, publishersSet = new Set(), translatorsSet = new Set();
       [...readBooks, ...boughtBooks, ...donatedBooks].forEach(b => {
-        let auths = b.authorsList || [b.author];
-        auths.forEach(a => { if (a && a.trim()) authorsSet.add(a.trim()); });
-
-        let trans = b.translatorsList || [b.translator];
-        trans.forEach(tr => { if (tr && tr.trim()) translatorsSet.add(tr.trim()); });
-
+        if (b.author && b.author.trim()) authorsSet.add(b.author.trim());
         if (b.publisher && b.publisher.trim()) publishersSet.add(b.publisher.trim());
+        if (b.translator && b.translator.trim()) translatorsSet.add(b.translator.trim());
         if (b.isSeries && b.seriesName && b.seriesName.trim()) {
           const sName = b.seriesName.trim();
           const tot = parseInt(b.seriesTotal) || 0;
@@ -1244,19 +1169,6 @@
       document.getElementById('translatorsDatalist').innerHTML = Array.from(translatorsSet).sort((a,b) => a.localeCompare(b, 'pt-BR')).map(tr => `<option value="${tr}">`).join('');
     }
 
-    function autoFillSeriesTotal(nameInputId, totalInputId) {
-      const sName = document.getElementById(nameInputId).value.trim();
-      if (!sName) return;
-      let maxTotal = 0;
-      [...readBooks, ...boughtBooks].forEach(b => {
-        if (b.isSeries && b.seriesName && b.seriesName.trim().toLowerCase() === sName.toLowerCase()) {
-          const tot = parseInt(b.seriesTotal) || 0;
-          if (tot > maxTotal) maxTotal = tot;
-        }
-      });
-      if (maxTotal > 0) document.getElementById(totalInputId).value = maxTotal;
-    }
-
     function escapeXml(unsafe) {
       if (!unsafe) return '';
       return unsafe.replace(/[<>&'"]/g, function (c) {
@@ -1264,10 +1176,10 @@
       });
     }
 
+    // REGRA DE COR DA LOMBADA: LENDO/RELENDO FICAM BRANCOS. NÃO LIDOS MANTÊM A COR DA CATEGORIA!
     function getSpineColor(b) {
       const status = b.statusTag || b.status || 'Lido';
-      // Livros Lendo ou Relendo permanecem na cor branca
-      if (status === 'Lendo' || status === 'Relendo') return '#f8fafc';
+      if (status === 'Lendo' || status === 'Relendo') return '#f8fafc'; // Branco apenas para Lendo/Relendo
       
       const typeVal = b.typeVal;
       const isAllowedWomanCategory = (typeVal == 10 || typeVal === '10' || typeVal == 13 || typeVal === '13' || typeVal == 14 || typeVal === '14');
@@ -1279,4 +1191,765 @@
       if (typeVal == 8 || typeVal === '8') return '#991b1b';
       if (typeVal == 3 || typeVal === '3') return '#854d0e';
       if (typeVal == 5 || typeVal === '5') return '#78350f';
-      if (typeVal == 15 || typeVal === '15') return
+      if (typeVal == 15 || typeVal === '15') return '#065f46';
+      if (typeVal == 14 || typeVal === '14') return '#78350f';
+      return '#4c1d95';
+    }
+
+    function getCategoryCover(title, author, typeVal, statusTag, hasWoman, isSeries, seriesName, seriesVol, seriesTotal, nonFictionSubcat, fictionGenre) {
+      let badge = 'LIVRO';
+      if (typeVal == 12 || typeVal === '12') badge = 'NÃO FICÇÃO';
+      else if (typeVal == 13 || typeVal === '13') badge = 'INGLÊS';
+      else if (typeVal == 8 || typeVal === '8') badge = 'CONTO';
+      else if (typeVal == 3 || typeVal === '3') badge = 'CRÔNICAS & POESIA';
+      else if (typeVal == 5 || typeVal === '5') badge = 'QUADRINHOS';
+      else if (typeVal == 15 || typeVal === '15') badge = 'NACIONAL / PT';
+      else if (typeVal == 14 || typeVal === '14') badge = 'ESTRANGEIRO';
+      else if (fictionGenre) badge = fictionGenre.toUpperCase();
+
+      let c1 = '#4c1d95', c2 = '#8b5cf6';
+      if (typeVal == 12 || typeVal === '12') { c1 = '#1e3a8a'; c2 = '#2563eb'; }
+      else if (typeVal == 13 || typeVal === '13') { c1 = '#c2410c'; c2 = '#f97316'; }
+      else if (typeVal == 8 || typeVal === '8') { c1 = '#991b1b'; c2 = '#ef4444'; }
+      else if (typeVal == 3 || typeVal === '3') { c1 = '#854d0e'; c2 = '#eab308'; }
+      else if (typeVal == 5 || typeVal === '5') { c1 = '#78350f'; c2 = '#b45309'; }
+      else if (typeVal == 15 || typeVal === '15') { c1 = '#065f46'; c2 = '#059669'; }
+
+      if (hasWoman) { c1 = '#be185d'; c2 = '#ec4899'; }
+
+      return generateStyledSvg(title, author, c1, c2, '#ffffff', badge, isSeries, seriesName, seriesVol, seriesTotal);
+    }
+
+    function generateStyledSvg(title, author, color1, color2, textColor, badgeText, isSeries, seriesName, seriesVol, seriesTotal) {
+      let safeTitle = escapeXml(title), safeAuthor = escapeXml(author), safeBadge = escapeXml(badgeText);
+      let bottomText = safeAuthor;
+      if (isSeries && seriesName) {
+        let volStr = seriesVol ? ` - Vol. ${seriesVol}` : '';
+        if (seriesTotal) volStr += `/${seriesTotal}`;
+        bottomText = `${safeAuthor} (${escapeXml(seriesName)}${volStr})`;
+      }
+
+      let maxCharsPerLine = 16, words = safeTitle.split(' '), lines = [], currentLine = '';
+      words.forEach(word => {
+        if ((currentLine + ' ' + word).trim().length <= maxCharsPerLine) currentLine = (currentLine + ' ' + word).trim();
+        else { if (currentLine) lines.push(currentLine); currentLine = word; }
+      });
+      if (currentLine) lines.push(currentLine);
+      if (lines.length > 4) lines = lines.slice(0, 4);
+
+      let startY = 120 - ((lines.length - 1) * 12), tspanElements = '';
+      lines.forEach((line, idx) => { tspanElements += `<tspan x="100" dy="${idx === 0 ? 0 : 22}">${line}</tspan>`; });
+
+      let bottomLines = [], bWords = bottomText.split(' '), bCurrent = '';
+      bWords.forEach(w => {
+        if ((bCurrent + ' ' + w).trim().length <= 28) bCurrent = (bCurrent + ' ' + w).trim();
+        else { if (bCurrent) bottomLines.push(bCurrent); bCurrent = w; }
+      });
+      if (bCurrent) bottomLines.push(bCurrent);
+      if (bottomLines.length > 2) bottomLines = bottomLines.slice(0, 2);
+
+      let bTspanElements = '';
+      bottomLines.forEach((bLine, idx) => { bTspanElements += `<tspan x="100" dy="${idx === 0 ? 0 : 14}">${bLine}</tspan>`; });
+
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 0 200 300"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${color1}"/><stop offset="100%" stop-color="${color2}"/></linearGradient></defs><rect width="200" height="300" fill="url(#g)"/><rect x="14" y="14" width="172" height="272" fill="none" stroke="${textColor === '#0f172a' ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.2)'}" stroke-width="2" rx="6"/><rect x="20" y="24" width="105" height="20" rx="4" fill="${textColor === '#0f172a' ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.35)'}"/><text x="72.5" y="38" font-family="Segoe UI, sans-serif" font-weight="bold" font-size="8" fill="${textColor}" text-anchor="middle">${safeBadge}</text><text x="100" y="${startY}" font-family="Segoe UI, sans-serif" font-weight="bold" font-size="15" fill="${textColor}" text-anchor="middle" width="160">${tspanElements}</text><line x1="30" y1="210" x2="170" y2="210" stroke="${textColor === '#0f172a' ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.2)'}" stroke-width="1"/><text x="100" y="235" font-family="Segoe UI, sans-serif" font-size="10" fill="${textColor === '#0f172a' ? '#334155' : 'rgba(255,255,255,0.85)'}" text-anchor="middle">${bTspanElements}</text></svg>`;
+      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    }
+
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+      if (tabId === 'goalTab') renderGoals();
+      if (tabId === 'textsTab') renderTextsModule();
+      if (tabId === 'readingDiaryTab') renderReadingDiary();
+      if (tabId === 'challengesTab') renderChallenges();
+      if (tabId === 'seriesTab') renderSeriesTab();
+      if (tabId === 'trophyTab') renderTrophies();
+      if (tabId === 'pointsTab') renderPointsModule();
+    }
+
+    function toggleSeriesInputs(formId) {
+      document.getElementById(`seriesFields_${formId}`).style.display = document.getElementById(formId === 'unifiedBookForm' ? 'uniIsSeries' : 'editIsSeries').checked ? 'block' : 'none';
+    }
+
+    function toggleEditSeriesInputs() {
+      document.getElementById('editSeriesFields').style.display = document.getElementById('editIsSeries').checked ? 'block' : 'none';
+    }
+
+    function save() {
+      localStorage.setItem('my_read_books', JSON.stringify(readBooks));
+      localStorage.setItem('my_bought_books', JSON.stringify(boughtBooks));
+      localStorage.setItem('my_donated_books', JSON.stringify(donatedBooks));
+      localStorage.setItem('my_custom_texts', JSON.stringify(customTexts));
+      localStorage.setItem('my_custom_goals', JSON.stringify(customGoals));
+      localStorage.setItem('my_custom_challenges', JSON.stringify(customChallenges));
+      localStorage.setItem('my_series_statuses', JSON.stringify(seriesStatuses));
+      localStorage.setItem('my_series_checked_books', JSON.stringify(seriesCheckedBooks));
+      updateDatalists();
+      render();
+    }
+
+    function updateShelfFilterDropdowns() {
+      const yearFilterEl = document.getElementById('shelfYearFilter'), pubFilterEl = document.getElementById('shelfPublisherFilter');
+      const currentYearVal = yearFilterEl ? yearFilterEl.value : 'all', currentPubVal = pubFilterEl ? pubFilterEl.value : 'all';
+      
+      const yearsSet = new Set(), publishersSet = new Set();
+      [...readBooks, ...boughtBooks, ...donatedBooks].forEach(b => {
+        let y = (b.endDate || b.startDate || '').substring(0, 4);
+        if (y && !isNaN(y)) yearsSet.add(y);
+        if (b.publisher && b.publisher.trim()) publishersSet.add(b.publisher.trim());
+      });
+
+      if (yearFilterEl) {
+        yearFilterEl.innerHTML = `<option value="all">📅 Todos os Anos</option><option value="nodate">Sem data</option>` + Array.from(yearsSet).sort().reverse().map(y => `<option value="${y}">${y}</option>`).join('');
+        yearFilterEl.value = currentYearVal;
+      }
+      if (pubFilterEl) {
+        pubFilterEl.innerHTML = `<option value="all">🏢 Todas as Editoras</option><option value="nopub">Sem editora</option>` + Array.from(publishersSet).sort((a,b) => a.localeCompare(b, 'pt-BR')).map(pub => `<option value="${pub}">${pub}</option>`).join('');
+        pubFilterEl.value = currentPubVal;
+      }
+    }
+
+    function parseBasePoints(typeVal) { return parseInt(typeVal) || 10; }
+
+    function calculateTrophyBonusPoints() {
+      return getTrophiesData().filter(t => t.unlocked).reduce((acc, t) => acc + (t.reward || 30), 0);
+    }
+
+    // ABRIR CARD DE PRÉ-VISUALIZAÇÃO DE CAPA E OPÇÕES AO CLICAR NA LOMBADA
+    function openBookPreviewModal(listType, originalIndex) {
+      const list = listType === 'read' ? readBooks : (listType === 'bought' ? boughtBooks : donatedBooks);
+      const b = list[originalIndex];
+      if (!b) return;
+
+      const coverUrl = getCategoryCover(b.title, b.author, b.typeVal || 10, b.statusTag || b.status, b.hasWoman, b.isSeries, b.seriesName, b.seriesVol, b.seriesTotal, b.nonFictionSubcat, b.fictionGenre);
+      
+      document.getElementById('previewCoverContainer').innerHTML = `<img src="${coverUrl}" style="width:100%; height:100%; object-fit:cover;">`;
+      document.getElementById('previewTitle').textContent = b.title;
+      document.getElementById('previewAuthor').textContent = (b.isOrganized ? 'Org. por ' : 'Por ') + b.author;
+      
+      let detailsHtml = `
+        <div><strong>Categoria:</strong> ${b.typeVal == 12 ? 'Não Ficção' : (b.fictionGenre || 'Ficção')} (+${b.points || 10} pts)</div>
+        <div><strong>Status:</strong> ${b.statusTag || b.status || 'Lido'} | <strong>Páginas:</strong> ${b.pages || 0}</div>
+      `;
+      if (b.isSeries) detailsHtml += `<div><strong>Série:</strong> ${b.seriesName} (Vol. ${b.seriesVol}/${b.seriesTotal})</div>`;
+      if (b.translator) detailsHtml += `<div><strong>Tradução:</strong> ${b.translator}</div>`;
+      if (b.publisher) detailsHtml += `<div><strong>Editora:</strong> ${b.publisher}</div>`;
+      
+      document.getElementById('previewDetails').innerHTML = detailsHtml;
+
+      document.getElementById('previewBtnEdit').onclick = () => { closeBookPreviewModal(); openEditModal(listType, originalIndex); };
+      document.getElementById('previewBtnDiary').onclick = () => { closeBookPreviewModal(); openDiaryModal(listType, originalIndex); };
+
+      document.getElementById('bookPreviewModal').style.display = 'flex';
+    }
+
+    function closeBookPreviewModal() { document.getElementById('bookPreviewModal').style.display = 'none'; }
+
+    function render() {
+      updateShelfFilterDropdowns();
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const sortOrder = document.getElementById('shelfSortOrder').value;
+      const f1 = document.getElementById('filter1').value;
+      const f2 = document.getElementById('filter2').value;
+      const f3 = document.getElementById('filter3').value;
+      const f4 = document.getElementById('filter4').value;
+      const genreFilter = document.getElementById('filterGenre') ? document.getElementById('filterGenre').value : 'all';
+      const pubFilter = document.getElementById('shelfPublisherFilter').value;
+      const yearFilter = document.getElementById('shelfYearFilter').value;
+
+      const totalPages = readBooks.reduce((acc, b) => acc + (parseInt(b.pages) || 0), 0);
+      const pageBonusPoints = Math.floor(totalPages / 1000) * 50;
+      document.getElementById('pageBonusProgress').textContent = `${totalPages % 1000}/1000 págs (+50 pts)`;
+
+      const goalPoints = Object.values(customGoals).reduce((acc, g) => {
+        let pts = (g.rewarded ? 150 : 0);
+        if (g.plannedBooks) pts += g.plannedBooks.filter(pb => pb.completed).length * 15;
+        return acc + pts;
+      }, 0);
+
+      const pointsGained = readBooks.reduce((acc, b) => acc + b.points, 0) + customTexts.reduce((acc, t) => acc + (t.points || 5), 0) + pageBonusPoints + (donatedBooks.length * 20) + goalPoints + calculateTrophyBonusPoints();
+      const pointsSpent = boughtBooks.reduce((acc, b) => acc + b.cost, 0);
+
+      document.getElementById('totalPoints').textContent = pointsGained - pointsSpent;
+      document.getElementById('totalBooks').textContent = readBooks.length + customTexts.length;
+      document.getElementById('totalUnread').textContent = [...readBooks, ...boughtBooks].filter(b => (b.statusTag || b.status) === 'Não Lido').length;
+      document.getElementById('totalPages').textContent = totalPages;
+
+      const xp = pointsGained, level = Math.floor(xp / 100) + 1;
+      document.getElementById('levelBar').style.width = `${xp % 100}%`;
+
+      let levelTitleStr = "Leitora Aprendiz", perkStr = "🔓 Recurso básico de estante";
+      if (level >= 6) { levelTitleStr = "Lenda Literária 👑"; perkStr = "🔓 Desbloqueio Total!"; }
+      else if (level >= 5) { levelTitleStr = "Crítica Literária Mestre 🌟"; perkStr = "🔓 Desafios personalizados!"; }
+      else if (level >= 4) { levelTitleStr = "Bibliófila Experiente 🏛️"; perkStr = "🔓 Relatórios avançados!"; }
+      else if (level >= 3) { levelTitleStr = "Leitora Voraz ⚡"; perkStr = "🔓 Criação de desafios!"; }
+      else if (level >= 2) { levelTitleStr = "Exploradora de Mundos 🧭"; perkStr = "🔓 Diário de Leitura!"; }
+
+      document.getElementById('levelTitle').textContent = `Nível ${level} - ${levelTitleStr}`;
+      document.getElementById('levelPerkDescription').textContent = perkStr;
+
+      const viewContainer = document.getElementById('shelfViewContainer');
+      viewContainer.innerHTML = '';
+
+      const allItems = [
+        ...readBooks.map(b => ({ ...b, origin: 'historico', listType: 'read', originalIndex: readBooks.indexOf(b) })),
+        ...boughtBooks.map(b => ({ ...b, origin: 'estoque', listType: 'bought', originalIndex: boughtBooks.indexOf(b) })),
+        ...donatedBooks.map(b => ({ ...b, origin: 'estoque', statusTag: 'Doado', listType: 'donated', originalIndex: donatedBooks.indexOf(b) }))
+      ];
+
+      const filteredItems = allItems.filter(b => {
+        if (search) {
+          const t = (b.title || '').toLowerCase();
+          const a = (b.author || '').toLowerCase();
+          const tr = (b.translator || '').toLowerCase();
+          const s = (b.seriesName || '').toLowerCase();
+          const pub = (b.publisher || '').toLowerCase();
+          if (!t.includes(search) && !a.includes(search) && !tr.includes(search) && !s.includes(search) && !pub.includes(search)) return false;
+        }
+
+        if (f1 === 'leituras' && b.listType !== 'read') return false;
+        if (f1 === 'estante' && b.listType !== 'bought') return false;
+
+        const currentTag = b.statusTag || b.status || 'Lido';
+        if (f2 === 'lidos' && !(currentTag === 'Lido')) return false;
+        if (f2 === 'nao_lidos' && !(currentTag === 'Não Lido')) return false;
+        if (f2 === 'lendo' && !(currentTag === 'Lendo')) return false;
+        if (f2 === 'relendo' && !(currentTag === 'Relendo')) return false;
+        if (f2 === 'abandonado' && !(currentTag === 'Abandonado')) return false;
+
+        if (f3 !== 'all' && b.format !== f3) return false;
+
+        if (f4 === 'avulso' && b.typeVal != 10) return false;
+        if (f4 === 'conto' && b.typeVal != 8) return false;
+        if (f4 === 'cronicas' && b.typeVal != 3) return false;
+        if (f4 === 'quadrinhos' && b.typeVal != 5) return false;
+        if (f4 === 'nao_ficcao' && b.typeVal != 12) return false;
+        if (f4 === 'ingles' && b.typeVal != 13) return false;
+        if (f4 === 'estrangeira' && b.typeVal != 14) return false;
+        if (f4 === 'nacionais' && !(b.hasLatino || b.typeVal == 15)) return false;
+        if (f4 === 'serie' && !b.isSeries) return false;
+
+        if (genreFilter !== 'all' && (b.fictionGenre || '') !== genreFilter) return false;
+
+        if (pubFilter !== 'all') {
+          const bookPub = (b.publisher || '').trim();
+          if (pubFilter === 'nopub' && bookPub) return false;
+          if (pubFilter !== 'nopub' && bookPub.toLowerCase() !== pubFilter.toLowerCase()) return false;
+        }
+
+        let bookYear = (b.endDate || b.startDate || '').substring(0, 4);
+        if (yearFilter !== 'all') {
+          if (yearFilter === 'nodate' && bookYear) return false;
+          if (yearFilter !== 'nodate' && bookYear !== yearFilter) return false;
+        }
+
+        return true;
+      });
+
+      filteredItems.sort((a, b) => {
+        if (sortOrder === 'alpha') return (a.title || '').localeCompare(b.title || '', 'pt-BR');
+        else if (sortOrder === 'author') return (a.author || '').localeCompare(b.author || '', 'pt-BR');
+        else if (sortOrder === 'color') return getSpineColor(a).localeCompare(getSpineColor(b));
+        else if (sortOrder === 'publisher') return (a.publisher || 'Sem Editora').localeCompare(b.publisher || 'Sem Editora', 'pt-BR');
+        else if (sortOrder === 'standalone_series') return (!!a.isSeries ? 1 : 0) - (!!b.isSeries ? 1 : 0);
+        return 0;
+      });
+
+      document.getElementById('shelfCountDisplay').textContent = `Mostrando ${filteredItems.length} livro(s)`;
+
+      // RENDERIZAR MODO LOMBADAS (20 POR FILEIRA)
+      let bookshelfHtml = '<div class="hogwarts-bookshelf">';
+      let booksPerRow = 20;
+      
+      for (let i = 0; i < filteredItems.length; i += booksPerRow) {
+        const rowItems = filteredItems.slice(i, i + booksPerRow);
+        bookshelfHtml += '<div class="shelf-row">';
+        
+        rowItems.forEach(b => {
+          let currentTag = b.statusTag || b.status || 'Lido';
+          let dotColor = currentTag === 'Lendo' ? 'var(--reading)' : (currentTag === 'Não Lido' ? 'var(--text-muted)' : (currentTag === 'Abandonado' ? 'var(--danger)' : (currentTag === 'Relendo' ? '#a855f7' : 'var(--success)')));
+          let spineBg = getSpineColor(b);
+          let heightVariation = 190 + ((b.title.length * 7) % 30);
+          let isWhiteSpine = (spineBg === '#f8fafc');
+
+          bookshelfHtml += `
+            <div class="spine-book" style="background: ${spineBg}; height: ${heightVariation}px;" onclick="openBookPreviewModal('${b.listType}', ${b.originalIndex})" title="${escapeXml(b.title)} - ${escapeXml(b.author)} (${currentTag})">
+              <div class="spine-deco-top" style="${isWhiteSpine ? 'border-color:#cbd5e1;' : ''}"></div>
+              <div class="spine-title ${isWhiteSpine ? 'dark-text' : ''}">${escapeXml(b.title)}</div>
+              <div style="display:flex; flex-direction:column; align-items:center;">
+                <div class="spine-status-dot" style="background: ${dotColor};" title="Status: ${currentTag}"></div>
+                <div class="spine-deco-bottom" style="${isWhiteSpine ? 'border-color:#cbd5e1;' : ''}"></div>
+              </div>
+            </div>
+          `;
+        });
+        
+        bookshelfHtml += '</div>';
+      }
+      
+      if (filteredItems.length === 0) {
+        bookshelfHtml += '<p style="color: var(--text-muted); text-align: center; padding: 40px;">Nenhum livro encontrado na estante com esses filtros.</p>';
+      }
+
+      bookshelfHtml += '</div>';
+      viewContainer.innerHTML = bookshelfHtml;
+
+      renderGoals(); renderChallenges(); renderSeriesTab(); renderTrophies();
+    }
+
+    // TEXTOS AVULSOS COM EDIÇÃO E BORDAS COLORIDAS
+    function addTextItem(e) {
+      e.preventDefault();
+      customTexts.push({
+        title: document.getElementById('txtTitle').value,
+        author: document.getElementById('txtAuthor').value,
+        pages: parseInt(document.getElementById('txtPages').value) || 0,
+        category: document.getElementById('txtCategory').value,
+        sourceBook: document.getElementById('txtSourceBook').value,
+        date: document.getElementById('txtDate').value,
+        comment: document.getElementById('txtComment').value,
+        points: 5
+      });
+      confetti({ particleCount: 50, spread: 70, origin: { y: 0.8 } });
+      e.target.reset(); save(); renderTextsModule();
+    }
+
+    function openEditTextModal(index) {
+      activeEditingTextIndex = index;
+      const t = customTexts[index];
+      if (!t) return;
+      document.getElementById('editTxtTitle').value = t.title;
+      document.getElementById('editTxtAuthor').value = t.author;
+      document.getElementById('editTxtPages').value = t.pages;
+      document.getElementById('editTxtCategory').value = t.category;
+      document.getElementById('editTxtSourceBook').value = t.sourceBook || '';
+      document.getElementById('editTxtDate').value = t.date || '';
+      document.getElementById('editTxtComment').value = t.comment || '';
+      document.getElementById('editTextModal').style.display = 'flex';
+    }
+
+    function closeEditTextModal() { document.getElementById('editTextModal').style.display = 'none'; activeEditingTextIndex = null; }
+
+    function saveEditedTextItem(e) {
+      e.preventDefault();
+      if (activeEditingTextIndex === null) return;
+      const t = customTexts[activeEditingTextIndex];
+      t.title = document.getElementById('editTxtTitle').value;
+      t.author = document.getElementById('editTxtAuthor').value;
+      t.pages = parseInt(document.getElementById('editTxtPages').value) || 0;
+      t.category = document.getElementById('editTxtCategory').value;
+      t.sourceBook = document.getElementById('editTxtSourceBook').value;
+      t.date = document.getElementById('editTxtDate').value;
+      t.comment = document.getElementById('editTxtComment').value;
+      closeEditTextModal(); save(); renderTextsModule();
+    }
+
+    function deleteTextItem(index) { customTexts.splice(index, 1); save(); renderTextsModule(); }
+
+    function renderTextsModule() {
+      const statsGrid = document.getElementById('textStatsGrid'), galleryEl = document.getElementById('textGallery');
+      const authorFilterEl = document.getElementById('textAuthorFilter');
+      const currentAuthorVal = authorFilterEl ? authorFilterEl.value : 'all';
+
+      const authorsSet = new Set(), counts = { Conto: 0, Crônica: 0, Peça: 0, HQ: 0, Poesia: 0, Ensaio: 0, Discurso: 0, Outros: 0 };
+      customTexts.forEach(t => { if (t.author && t.author.trim()) authorsSet.add(t.author.trim()); });
+
+      if (authorFilterEl) {
+        authorFilterEl.innerHTML = `<option value="all">👤 Filtrar por Autor(a): Todos</option>` + Array.from(authorsSet).sort((a,b) => a.localeCompare(b, 'pt-BR')).map(aut => `<option value="${aut}">${aut}</option>`).join('');
+        authorFilterEl.value = currentAuthorVal;
+      }
+
+      let textsToProcess = customTexts;
+      if (currentAuthorVal !== 'all') textsToProcess = customTexts.filter(t => (t.author || '').trim().toLowerCase() === currentAuthorVal.toLowerCase());
+      textsToProcess.forEach(t => { if (counts[t.category] !== undefined) counts[t.category]++; else counts.Outros++; });
+
+      let statsHtml = `<div class="stat-badge" style="cursor:pointer;" onclick="currentTextCategoryFilter='all'; renderTextsModule();"><div style="font-size:0.7rem;color:var(--text-muted)">Todos</div><div class="stat-value" style="font-size:1.2rem; color:var(--accent);">${textsToProcess.length}</div></div>`;
+      Object.keys(textCategoryColors).forEach(cat => {
+        statsHtml += `<div class="stat-badge" style="cursor:pointer;" onclick="currentTextCategoryFilter='${cat}'; renderTextsModule();"><div style="font-size:0.7rem;color:var(--text-muted)">${cat}s</div><div class="stat-value" style="font-size:1.2rem; color:${textCategoryColors[cat]};">${counts[cat]}</div></div>`;
+      });
+      statsGrid.innerHTML = statsHtml;
+
+      let galleryTexts = currentTextCategoryFilter === 'all' ? textsToProcess : textsToProcess.filter(t => t.category === currentTextCategoryFilter);
+      document.getElementById('textShelfCountDisplay').textContent = `${galleryTexts.length} texto(s)`;
+      galleryEl.innerHTML = galleryTexts.length === 0 ? '<p style="color:var(--text-muted); grid-column:1/-1;">Nenhum texto encontrado.</p>' : '';
+      
+      galleryTexts.forEach(t => {
+        let originalIndex = customTexts.indexOf(t);
+        let tagColor = textCategoryColors[t.category] || '#475569';
+        galleryEl.innerHTML += `
+          <div class="text-label-card" style="border-color: ${tagColor};">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <span class="text-label-category" style="background: ${tagColor};">${t.category}</span>
+                <div>
+                  <button onclick="openEditTextModal(${originalIndex})" style="background:none; border:none; color:#0284c7; cursor:pointer; font-size:0.85rem; margin-right:4px;" title="Editar">✏️</button>
+                  <button onclick="deleteTextItem(${originalIndex})" style="background:none; border:none; color:#991b1b; cursor:pointer; font-size:0.85rem;" title="Excluir">🗑️</button>
+                </div>
+              </div>
+              <div style="font-weight:700; font-size:0.95rem; margin-top:4px; line-height:1.2rem; color:#1e1b4b;">${t.title}</div>
+              <div style="font-size:0.8rem; color:#475569; margin-top:2px;">Por <strong>${t.author}</strong></div>
+              ${t.sourceBook ? `<div style="font-size:0.75rem; color:#64748b; font-style:italic; margin-top:2px;">Origem: ${t.sourceBook}</div>` : ''}
+              ${t.comment ? `<div style="font-size:0.78rem; color:#334155; margin-top:8px; border-top:1px dashed #cbd5e1; padding-top:6px;">"${t.comment}"</div>` : ''}
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; font-size:0.75rem; border-top:1px solid #d4c4a8; padding-top:6px; color:#57534e;">
+              <span>📅 ${t.date || 'Sem data'}</span>
+              <strong style="color:#0f172a;">${t.pages} págs</strong>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function renderReadingDiary() {
+      const galleryEl = document.getElementById('readingDiaryGallery');
+      galleryEl.innerHTML = '';
+      const diaryBooks = [];
+      [...readBooks, ...boughtBooks].forEach(b => {
+        const status = b.statusTag || b.status || 'Lido';
+        if (status === 'Lendo' || status === 'Relendo') {
+          diaryBooks.push({ ...b, listType: readBooks.includes(b) ? 'read' : 'bought', originalIndex: readBooks.includes(b) ? readBooks.indexOf(b) : boughtBooks.indexOf(b), statusLabel: status });
+        }
+      });
+
+      if (diaryBooks.length === 0) {
+        galleryEl.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1;">Nenhum livro com status "Lendo" ou "Relendo" no momento.</p>';
+        return;
+      }
+      diaryBooks.forEach(b => {
+        const cover = getCategoryCover(b.title, b.author, b.typeVal || 10, b.statusTag || b.status, b.hasWoman, b.isSeries, b.seriesName, b.seriesVol, b.seriesTotal, b.nonFictionSubcat, b.fictionGenre);
+        galleryEl.innerHTML += `
+          <div style="background:#0b0f19; border-radius:12px; border:1px solid rgba(255,255,255,0.08); overflow:hidden; padding:10px; display:flex; flex-direction:column; gap:8px;">
+            <div style="height:140px; border-radius:8px; overflow:hidden; cursor:pointer;" onclick="openDiaryModal('${b.listType}', ${b.originalIndex})"><img src="${cover}" style="width:100%; height:100%; object-fit:cover;"></div>
+            <div style="font-weight:bold; font-size:0.8rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${b.title}</div>
+            <button class="btn-primary" onclick="openDiaryModal('${b.listType}', ${b.originalIndex})" style="padding:6px; font-size:0.75rem;">📖 Diário</button>
+          </div>
+        `;
+      });
+    }
+
+    function renderChallenges() {
+      const container = document.getElementById('challengesContainer');
+      container.innerHTML = '';
+      customChallenges.forEach((chal, cIndex) => {
+        let itemsHtml = '', completedCount = 0;
+        chal.books.forEach((bk, bIndex) => {
+          if (bk.read) completedCount++;
+          itemsHtml += `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); padding:8px 12px; border-radius:8px; margin-bottom:6px; font-size:0.85rem;">
+              <label style="display:flex; align-items:center; gap:8px; margin:0; cursor:pointer; color:var(--text);">
+                <input type="checkbox" ${bk.read ? 'checked' : ''} onchange="toggleChallengeBook(${cIndex}, ${bIndex})">
+                <span style="${bk.read ? 'text-decoration:line-through; color:var(--text-muted);' : ''}">${bk.title}</span>
+              </label>
+            </div>
+          `;
+        });
+        const totalChal = chal.books.length, percentChal = totalChal > 0 ? Math.round((completedCount / totalChal) * 100) : 0;
+        container.innerHTML += `
+          <details style="background:rgba(255,255,255,0.03); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
+            <summary style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:1.05rem; color:#c084fc;">${chal.title}</span>
+              <span style="font-size:0.8rem; color:var(--gold-bright); font-weight:bold;">${completedCount} / ${totalChal} (${percentChal}%)</span>
+            </summary>
+            <div style="background:rgba(0,0,0,0.4); border-radius:6px; height:8px; overflow:hidden; margin:12px 0;"><div style="background:var(--accent); height:100%; width:${percentChal}%;"></div></div>
+            ${itemsHtml}
+          </details>
+        `;
+      });
+    }
+
+    function toggleChallengeBook(cIndex, bIndex) { customChallenges[cIndex].books[bIndex].read = !customChallenges[cIndex].books[bIndex].read; save(); renderChallenges(); }
+
+    function createNewCustomChallenge() {
+      const title = prompt("Digite o nome do novo desafio literário:");
+      if (title) { customChallenges.push({ id: 'custom_' + Date.now(), title, books: [], allowAdd: true }); save(); renderChallenges(); }
+    }
+
+    // SALA DE TROFÉUS PROGRESSIVA (NÍVEIS DE EVOLUÇÃO)
+    function getTrophiesData() {
+      const totalLidosCount = readBooks.length + customTexts.length, totalPagesCount = readBooks.reduce((acc, b) => acc + (parseInt(b.pages) || 0), 0);
+      
+      const getTier = (val, t1, t2, t3, t4) => {
+        if (val >= t4) return { tier: '💎 Diamante', level: 4, reward: 120, next: t4 };
+        if (val >= t3) return { tier: '🥇 Ouro', level: 3, reward: 80, next: t4 };
+        if (val >= t2) return { tier: '🥈 Prata', level: 2, reward: 50, next: t3 };
+        if (val >= t1) return { tier: '🥉 Bronze', level: 1, reward: 30, next: t2 };
+        return { tier: '🔒 Bloqueado', level: 0, reward: 0, next: t1 };
+      };
+
+      const tLidos = getTier(totalLidosCount, 5, 15, 30, 50);
+      const tPages = getTier(totalPagesCount, 1000, 3000, 6000, 10000);
+      const tMulheres = getTier(readBooks.filter(b => b.hasWoman).length, 3, 10, 20, 35);
+      const tFavoritos = getTier(readBooks.filter(b => b.isFavorite).length, 2, 5, 10, 20);
+
+      return [
+        { title: "📚 Maratonista Literária", desc: "Acumule livros e textos lidos.", unlocked: tLidos.level > 0, progress: `${totalLidosCount} lidos (${tLidos.tier})`, reward: tLidos.reward },
+        { title: "📜 Devoradora de Páginas", desc: "Ultrapasse metas de páginas lidas.", unlocked: tPages.level > 0, progress: `${totalPagesCount} págs (${tPages.tier})`, reward: tPages.reward },
+        { title: "👩 Vozes Femininas", desc: "Leia livros de autoras mulheres.", unlocked: tMulheres.level > 0, progress: `${readBooks.filter(b => b.hasWoman).length} autoras (${tMulheres.tier})`, reward: tMulheres.reward },
+        { title: "❤️ Colecionadora de Paixões", desc: "Marque livros como favoritos.", unlocked: tFavoritos.level > 0, progress: `${readBooks.filter(b => b.isFavorite).length} favoritos (${tFavoritos.tier})`, reward: tFavoritos.reward }
+      ];
+    }
+
+    function renderTrophies() {
+      const container = document.getElementById('trophiesContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      getTrophiesData().forEach(t => {
+        container.innerHTML += `
+          <div style="${t.unlocked ? 'background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.3);' : 'background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.06);'} border-radius: 14px; padding: 18px; border: 1px solid; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <h3 style="margin: 0; font-size: 1rem; color: var(--text);">${t.title}</h3>
+                <span style="font-size: 0.75rem; font-weight: bold; color: ${t.unlocked ? 'var(--success)' : 'var(--text-muted)'};">${t.unlocked ? `🏆 ${t.progress} (+${t.reward} pts)` : `🔒 Bloqueado`}</span>
+              </div>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">${t.desc}</p>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function renderSeriesTab() {
+      const seriesContainer = document.getElementById('seriesTrackingList');
+      if (!seriesContainer) return;
+      seriesContainer.innerHTML = '';
+      const seriesMap = {};
+      [...readBooks, ...boughtBooks].forEach(b => {
+        if (b.isSeries && b.seriesName) {
+          let sName = b.seriesName.trim();
+          if (!seriesMap[sName]) seriesMap[sName] = { maxVol: 0, volumesRead: new Set() };
+          let vol = parseInt(b.seriesVol) || 1, tot = parseInt(b.seriesTotal) || vol;
+          if (tot > seriesMap[sName].maxVol) seriesMap[sName].maxVol = tot;
+          if ((b.statusTag || b.status) === 'Lido' || readBooks.includes(b)) seriesMap[sName].volumesRead.add(vol);
+        }
+      });
+      const seriesKeys = Object.keys(seriesMap);
+      if (seriesKeys.length === 0) { seriesContainer.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">Nenhuma série cadastrada.</p>'; return; }
+
+      seriesKeys.forEach(sName => {
+        const data = seriesMap[sName];
+        const totalVol = Math.max(data.maxVol, 1);
+        seriesContainer.innerHTML += `<div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);"><div style="font-weight:bold;">📖 ${sName} (${data.volumesRead.size}/${totalVol} lidos)</div></div>`;
+      });
+    }
+
+    function cleanOrphanSeries() { alert('🧹 Séries limpas!'); }
+
+    // ABA 7: METAS LITERÁRIAS (PLANEJAMENTO ANTECIPADO)
+    function filterGoalBookOptions() {
+      const query = document.getElementById('goalBookSearchInput').value.toLowerCase();
+      const select = document.getElementById('goalBookSelect');
+      const allAvailable = [...readBooks, ...boughtBooks];
+      select.innerHTML = allAvailable.filter(b => b.title.toLowerCase().includes(query) || b.author.toLowerCase().includes(query)).map(b => `<option value="${b.title}">${b.title} - ${b.author}</option>`).join('');
+    }
+
+    function addPlannedBookToGoal() {
+      const year = document.getElementById('goalYearSelect').value;
+      const title = document.getElementById('goalBookSelect').value;
+      const catIdx = parseInt(document.getElementById('goalCategorySelect').value);
+      if (!title) return;
+
+      if (!customGoals[year].plannedBooks) customGoals[year].plannedBooks = [];
+      customGoals[year].plannedBooks.push({ title, categoryIndex: catIdx, completed: false });
+      save(); renderGoals();
+    }
+
+    function toggleGoalBookCompletion(year, index) {
+      const pb = customGoals[year].plannedBooks[index];
+      pb.completed = !pb.completed;
+      if (pb.completed) confetti({ particleCount: 60, spread: 60, origin: { y: 0.7 } });
+      save(); renderGoals();
+    }
+
+    function renderGoals() {
+      const year = document.getElementById('goalYearSelect').value;
+      if (!customGoals[year]) customGoals[year] = { rewarded: false, plannedBooks: [] };
+
+      document.getElementById('goalTitleHeader').textContent = `Desafio Literário de ${year}`;
+      filterGoalBookOptions();
+
+      const categories = [
+        "Até 10 Livros Padrão", "1 Conto", "1 HQ / Mangá",
+        "a. Livro escrito por uma mulher", "b. Autor(a) inédito(a)", "c. Nacional, latino ou PT",
+        "d. Livro em inglês", "e. Livro de não ficção", "f. Livro de série",
+        "g. Livro físico", "h. Livro digital", "i. Livro avulso", "j. Livro do Stephen King"
+      ];
+
+      const missionsListEl = document.getElementById('missionsList');
+      missionsListEl.innerHTML = '';
+      const planned = customGoals[year].plannedBooks || [];
+
+      categories.forEach((catName, cIdx) => {
+        const catBooks = planned.filter(pb => pb.categoryIndex === cIdx);
+        let itemsHtml = '';
+        catBooks.forEach(pb => {
+          let globalIdx = planned.indexOf(pb);
+          itemsHtml += `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px; background:rgba(0,0,0,0.2); padding:4px 8px; border-radius:6px; font-size:0.78rem;">
+              <span>${pb.completed ? '✅' : '⏳'} ${pb.title}</span>
+              <button onclick="toggleGoalBookCompletion('${year}', ${globalIdx})" style="background:none; border:none; color:var(--gold-bright); cursor:pointer; font-size:0.75rem;">${pb.completed ? 'Desmarcar' : 'Concluir (+15 pts)'}</button>
+            </div>
+          `;
+        });
+
+        missionsListEl.innerHTML += `
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px; border-radius: 12px;">
+            <div style="font-size:0.85rem; font-weight:bold; color:var(--accent);">${catName}</div>
+            ${itemsHtml || '<div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Nenhum livro planejado</div>'}
+          </div>
+        `;
+      });
+    }
+
+    function addNewGoalYear() {
+      const year = prompt("Digite o ano da nova meta:");
+      if (year && !customGoals[year]) {
+        customGoals[year] = { rewarded: false, plannedBooks: [] };
+        save(); renderGoals();
+      }
+    }
+
+    // ABA 9: PONTUAÇÃO & DICAS (SORTEADOR & TOP 5)
+    function sortearProximaLeitura() {
+      const unread = [...readBooks, ...boughtBooks].filter(b => (b.statusTag || b.status) === 'Não Lido');
+      const resEl = document.getElementById('sorteioResult');
+      if (unread.length === 0) { resEl.innerHTML = '<p style="color:var(--text-muted);">Nenhum livro não lido disponível para sorteio!</p>'; return; }
+      
+      const drawn = unread[Math.floor(Math.random() * unread.length)];
+      confetti({ particleCount: 80, spread: 80, origin: { y: 0.7 } });
+      resEl.innerHTML = `
+        <div style="background: rgba(139, 92, 246, 0.15); border: 1px solid var(--accent); padding: 16px; border-radius: 12px; text-align: center;">
+          <h3 style="margin:0; color:var(--gold-bright);">📖 ${drawn.title}</h3>
+          <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Por <strong>${drawn.author}</strong> (${drawn.format || 'Físico'})</div>
+          <div style="font-size:0.8rem; color:var(--success); margin-top:6px; font-weight:bold;">Vale até +${drawn.points || 10} moedas ao concluir!</div>
+        </div>
+      `;
+    }
+
+    function renderPointsModule() {
+      const topContainer = document.getElementById('topValuableBooksContainer');
+      const unread = [...readBooks, ...boughtBooks].filter(b => (b.statusTag || b.status) === 'Não Lido');
+      unread.sort((a, b) => (b.points || 10) - (a.points || 10));
+      const top5 = unread.slice(0, 5);
+
+      topContainer.innerHTML = top5.length === 0 ? '<p style="color:var(--text-muted);">Nenhum livro na fila!</p>' : '';
+      top5.forEach((b, i) => {
+        topContainer.innerHTML += `
+          <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.08);">
+            <div><strong>#${i+1} ${b.title}</strong> — ${b.author}</div>
+            <span style="color:var(--gold-bright); font-weight:bold;">+${b.points || 10} moedas</span>
+          </div>
+        `;
+      });
+    }
+
+    // MODAL EDIÇÃO
+    function openEditModal(listType, index) {
+      activeEditBook = { list: listType === 'read' ? readBooks : (listType === 'bought' ? boughtBooks : donatedBooks), index };
+      const book = activeEditBook.list[activeEditBook.index];
+      document.getElementById('editTitle').value = book.title;
+      document.getElementById('editAuthor1').value = book.author || '';
+      document.getElementById('editPages').value = book.pages || '';
+      document.getElementById('editFormat').value = book.format || 'Físico';
+      document.getElementById('editPublisher').value = book.publisher || '';
+      document.getElementById('editStartDate').value = book.startDate || '';
+      document.getElementById('editEndDate').value = book.endDate || '';
+      document.getElementById('editType').value = book.typeVal || 10;
+      document.getElementById('editStatus').value = book.statusTag || book.status || 'Lido';
+
+      if (listType === 'bought') document.getElementById('editHasStock').value = (book.format === 'Digital' ? 'digital' : 'fisico');
+      else document.getElementById('editHasStock').value = 'nao';
+      toggleEditStockOptions(); toggleSubcategories('editForm');
+
+      document.getElementById('editModal').style.display = 'flex';
+    }
+
+    function closeEditModal() { document.getElementById('editModal').style.display = 'none'; activeEditBook = null; }
+    function deleteCurrentEditedBook() { if (activeEditBook && confirm('Excluir livro?')) { activeEditBook.list.splice(activeEditBook.index, 1); closeEditModal(); save(); } }
+    function donateCurrentEditedBook() { if (activeEditBook && confirm('Marcar como doado? (+20 moedas)')) { let book = activeEditBook.list.splice(activeEditBook.index, 1)[0]; book.statusTag = 'Doado'; donatedBooks.push(book); closeEditModal(); save(); } }
+
+    function saveEditedBook(e) {
+      e.preventDefault();
+      if (!activeEditBook) return;
+      const book = activeEditBook.list[activeEditBook.index];
+      book.title = document.getElementById('editTitle').value;
+      book.author = document.getElementById('editAuthor1').value;
+      book.pages = parseInt(document.getElementById('editPages').value) || 0;
+      book.statusTag = document.getElementById('editStatus').value;
+      book.status = book.statusTag;
+      closeEditModal(); save();
+    }
+
+    function openDiaryModal(listType, index) {
+      activeDiaryBook = { list: listType === 'read' ? readBooks : (listType === 'bought' ? boughtBooks : donatedBooks), index };
+      const book = activeDiaryBook.list[activeDiaryBook.index];
+      document.getElementById('modalBookTitle').textContent = book.title;
+      document.getElementById('modalBookAuthor').textContent = book.author;
+      document.getElementById('modalPublisher').textContent = book.publisher || 'Não informada';
+      document.getElementById('modalFormat').textContent = book.format || 'Físico';
+      document.getElementById('modalPages').textContent = book.pages || 0;
+      document.getElementById('modalStatus').textContent = book.statusTag || book.status || 'Lido';
+      document.getElementById('diaryModal').style.display = 'flex';
+    }
+
+    function closeDiaryModal() { document.getElementById('diaryModal').style.display = 'none'; activeDiaryBook = null; }
+    function onModalStatusChange() {}
+    function saveProgressEntry() { closeDiaryModal(); save(); alert('⚡ Progresso salvo!'); }
+
+    // SUBMIT FORM UNIFICADO
+    document.getElementById('unifiedBookForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('uniTitle').value;
+      const a1 = document.getElementById('uniAuthor1').value, a2 = document.getElementById('uniAuthor2').value, a3 = document.getElementById('uniAuthor3').value;
+      const isOrg = document.getElementById('uniIsOrganized').checked;
+      let authorStr = [a1, a2, a3].filter(a => a.trim()).join(', ');
+      if (isOrg) authorStr += ' (Org.)';
+
+      const pages = parseInt(document.getElementById('uniPages').value) || 0;
+      const format = document.getElementById('uniFormat').value;
+      const hasStock = document.getElementById('uniHasStock').value;
+      const statusInput = document.getElementById('uniStatus').value;
+      const typeValInput = document.getElementById('uniType').value;
+      const publisher = document.getElementById('uniPublisher').value;
+
+      const t1 = document.getElementById('uniTranslator1').value, t2 = document.getElementById('uniTranslator2').value;
+      const translatorStr = [t1, t2].filter(t => t.trim()).join(', ');
+
+      const rating = parseInt(document.getElementById('uniRating').value) || 0;
+      const isFavorite = document.getElementById('uniIsFavorite').checked;
+      const startDate = document.getElementById('uniStartDate').value, endDate = document.getElementById('uniEndDate').value;
+      const comment = document.getElementById('uniComment').value;
+
+      let nonFictionSubcat = typeValInput == 12 ? document.getElementById('uniNonFictionSubcat').value : '', fictionGenre = typeValInput != 12 ? document.getElementById('uniFictionGenre').value : '';
+      const base = parseBasePoints(typeValInput), isSeries = document.getElementById('uniIsSeries').checked, hasWoman = document.getElementById('uniBonusWoman').checked, hasLatino = document.getElementById('uniBonusLatino').checked, hasNew = document.getElementById('uniBonusNew').checked;
+      let bonus = (hasWoman ? 5 : 0) + (hasLatino || typeValInput == 15 ? 5 : 0) + (hasNew ? 5 : 0);
+      let seriesName = '', seriesVol = 0, seriesTotal = 0;
+      if (isSeries) {
+        seriesName = document.getElementById('uniSeriesName').value;
+        seriesVol = parseInt(document.getElementById('uniSeriesVol').value) || 1;
+        seriesTotal = parseInt(document.getElementById('uniSeriesTotal').value) || 1;
+      }
+
+      const bookObj = {
+        title, author: authorStr, isOrganized: isOrg, pages, format, publisher, translator: translatorStr, startDate, endDate, comment,
+        points: base + bonus, typeVal: typeValInput, nonFictionSubcat, fictionGenre, rating, isFavorite,
+        statusTag: statusInput, status: statusInput, isSeries, seriesName, seriesVol, seriesTotal, hasWoman, hasLatino, hasNew
+      };
+
+      if (hasStock !== 'nao') {
+        bookObj.cost = parseInt(document.getElementById('uniCostType').value) || 0;
+        boughtBooks.push(bookObj);
+      } else {
+        readBooks.push(bookObj);
+      }
+
+      confetti({ particleCount: 70, spread: 80, origin: { y: 0.8 } });
+      e.target.reset(); toggleStockOptions(); save();
+      alert('⚡ Livro cadastrado com sucesso!');
+    });
+
+    updateDatalists(); render(); renderTextsModule(); renderChallenges(); renderSeriesTab(); renderTrophies();
+  </script>
+</body>
+</html>
