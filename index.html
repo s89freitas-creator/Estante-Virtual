@@ -561,7 +561,7 @@
       <div class="card">
         <h2>📖 Diário de Leitura (Livros em Andamento & Acompanhamento)</h2>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
-          Acompanhe aqui o andamento dos seus livros marcados como <strong>Lendo</strong> ou <strong>Relendo</strong>.
+          Acompanhe aqui o andamento dos seus livros marcados como <strong>Lendo</strong> ou <strong>Relendo</strong>. Clique em um livro para atualizar o progresso.
         </p>
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px;" id="readingDiaryGallery"></div>
       </div>
@@ -651,12 +651,12 @@
       </div>
     </div>
 
-    <!-- ABA 8: SALA DE TROFÉUS (COMPLETA) -->
+    <!-- ABA 8: SALA DE TROFÉUS -->
     <div id="trophyTab" class="tab-content">
       <div class="card">
         <h2>🏅 Sala de Troféus & Níveis de Conquista</h2>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
-          Cada conquista possui níveis de evolução (Bronze ➔ Prata ➔ Ouro ➔ Diamante). Conforme suas leituras avançam, os troféus evoluem e continuam te premiando com mais moedas!
+          Conquistas baseadas em livros, páginas, séries e gêneros literários (Romance, Terror, Fantasia, Clássicos, etc.).
         </p>
         <div id="trophiesContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;"></div>
       </div>
@@ -665,9 +665,49 @@
     <!-- ABA 9: PONTUAÇÃO & DICAS -->
     <div id="pointsTab" class="tab-content">
       <div class="card">
-        <h2>🎲 Sorteador de Próxima Leitura</h2>
-        <p style="font-size:0.85rem; color:var(--text-muted);">Está indecisa sobre qual livro começar? Deixe a estante decidir para você!</p>
-        <button class="btn-primary" onclick="sortearProximaLeitura()" style="width:auto; padding: 10px 20px; font-size: 0.95rem;">🎲 Sortear Livro Não Lido</button>
+        <h2>🎲 Sorteador Avançado de Próxima Leitura</h2>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 14px;">Filtre por categoria, gênero ou autor para sortear o próximo livro da pilha de não lidos:</p>
+        <div class="inline-fields" style="margin-bottom: 10px;">
+          <div>
+            <label>Filtrar por Categoria</label>
+            <select id="sorterCategoryFilter">
+              <option value="all">Todas as Categorias</option>
+              <option value="10">Livro Padrão (+10)</option>
+              <option value="8">Livros Conto (+8)</option>
+              <option value="3">Crônicas, peças, poesia (+3)</option>
+              <option value="5">Quadrinhos (+5)</option>
+              <option value="12">Livros de Não-ficção (+12)</option>
+              <option value="13">Livros em inglês (+13)</option>
+              <option value="15">Livros Nacionais / PT (+15)</option>
+              <option value="14">Língua estrangeira (+14)</option>
+            </select>
+          </div>
+          <div>
+            <label>Filtrar por Gênero</label>
+            <select id="sorterGenreFilter">
+              <option value="all">Todos os Gêneros</option>
+              <option value="Clássicos">Clássicos</option>
+              <option value="Comédia">Comédia</option>
+              <option value="Distopia">Distopia</option>
+              <option value="Drama">Drama</option>
+              <option value="Erótico">Erótico</option>
+              <option value="Fantasia">Fantasia</option>
+              <option value="Ficção Científica">Ficção Científica</option>
+              <option value="Infanto-Juvenil">Infanto-Juvenil</option>
+              <option value="Romance">Romance</option>
+              <option value="Suspense">Suspense</option>
+              <option value="Terror">Terror</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom: 14px;">
+          <label>Filtrar por Autor(a)</label>
+          <select id="sorterAuthorFilter">
+            <option value="all">Todos os Autores</option>
+          </select>
+        </div>
+        <button class="btn-primary" onclick="sortearProximaLeituraAvancado()" style="width:auto; padding: 10px 20px; font-size: 0.95rem;">🎲 Sortear com Filtros</button>
         <div id="sorteioResult" style="margin-top: 14px;"></div>
       </div>
 
@@ -729,7 +769,7 @@
     </div>
   </div>
 
-  <!-- MODAL DE DIÁRIO DE LEITURA -->
+  <!-- MODAL DE DIÁRIO DE LEITURA (ATUALIZADO) -->
   <div class="modal" id="diaryModal">
     <div class="modal-content">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 12px;">
@@ -742,20 +782,28 @@
 
       <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; font-size: 0.82rem; margin-bottom: 14px; display:flex; flex-direction:column; gap:6px;">
         <div>Editora: <strong id="modalPublisher">-</strong> | Formato: <strong id="modalFormat">-</strong></div>
-        <div>Páginas Totais: <strong id="modalPages">-</strong> | Status Atual: <strong id="modalStatus" style="color:var(--gold-bright);">-</strong></div>
-        <div>Início: <strong id="modalStartDate">-</strong> | Fim / Conclusão: <strong id="modalEndDate">-</strong></div>
+        <div>Páginas Totais: <strong id="modalPages">-</strong> | Páginas Restantes: <strong id="modalPagesRemaining" style="color:var(--gold-bright);">-</strong></div>
+        <div>Status Atual: <strong id="modalStatus" style="color:var(--gold-bright);">-</strong></div>
       </div>
 
       <div style="background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.3); padding: 12px; border-radius: 12px; margin-bottom: 14px;">
-        <h3 style="font-size: 0.85rem; color: #c084fc; margin: 0 0 8px 0;">📈 Atualizar Status & Notas</h3>
+        <h3 style="font-size: 0.85rem; color: #c084fc; margin: 0 0 8px 0;">📈 Atualizar Progresso & Leitura</h3>
+        
+        <label>Data da Atualização</label>
+        <input type="date" id="modalUpdateDate" style="margin-bottom:8px;">
+
+        <label>Quantidade de Páginas Lidas (Acumuladas)</label>
+        <input type="number" id="modalUpdatePagesRead" placeholder="Ex: 120" style="margin-bottom:8px;" oninput="calculateRemainingModalPages()">
+
+        <label>Novo Status de Leitura</label>
         <select id="modalUpdateStatus" style="margin-bottom:8px;">
-          <option value="Lido">Lido</option>
           <option value="Lendo">Lendo</option>
           <option value="Relendo">Relendo</option>
-          <option value="Não Lido">Não Lido (Fila)</option>
+          <option value="Lido">Lido</option>
           <option value="Abandonado">Abandonado</option>
         </select>
-        <button class="btn-primary" onclick="saveProgressEntry()" style="padding: 8px; font-size: 0.85rem;">Salvar Atualização</button>
+
+        <button class="btn-primary" onclick="saveProgressEntry()" style="padding: 10px; font-size: 0.85rem; margin-top: 6px;">Salvar Atualização</button>
       </div>
     </div>
   </div>
@@ -974,9 +1022,7 @@
       ] },
       { id: 'autores100', title: 'Desafio 100 Autores', books: Array.from({length: 100}, (_, i) => ({title: `Autor(a) #${i+1}`, read: false})) },
       { id: 'autoras100', title: 'Desafio 100 Autoras', books: Array.from({length: 100}, (_, i) => ({title: `Autora #${i+1}`, read: false})) },
-      { id: 'king', title: 'Desafio Stephen King', books: [
-        {title: 'Carrie', read: false}, {title: 'O Iluminado', read: false}, {title: 'It: A Coisa', read: false}, {title: 'A Dança da Morte', read: false}, {title: 'Misery', read: false}
-      ] }
+      { id: 'king', title: 'Desafio Stephen King', books: [] }
     ];
 
     let savedChallenges = JSON.parse(localStorage.getItem('my_custom_challenges')) || null;
@@ -1020,10 +1066,24 @@
             if (parsed.seriesStatuses) seriesStatuses = parsed.seriesStatuses;
             if (parsed.seriesCheckedBooks) seriesCheckedBooks = parsed.seriesCheckedBooks;
             if (parsed.customChallenges) customChallenges = parsed.customChallenges;
+            syncStephenKingChallenge();
             save(); alert('🎉 Backup importado com sucesso!');
           } catch (err) { alert('❌ Erro ao ler o arquivo de backup.'); }
         };
       }
+    }
+
+    function syncStephenKingChallenge() {
+      const kingChallenge = customChallenges.find(c => c.id === 'king' || c.title.toLowerCase().includes('stephen king'));
+      if (!kingChallenge) return;
+
+      const allRegisteredBooks = [...readBooks, ...boughtBooks];
+      const kingBooks = allRegisteredBooks.filter(b => (b.author || '').toLowerCase().includes('stephen king'));
+
+      kingChallenge.books = kingBooks.map(b => {
+        const isRead = (b.statusTag || b.status) === 'Lido' || readBooks.includes(b);
+        return { title: `${b.title} (${b.author})`, read: isRead };
+      });
     }
 
     function toggleStockOptions() {
@@ -1062,10 +1122,16 @@
       });
       customTexts.forEach(t => { if (t.author && t.author.trim()) authorsSet.add(t.author.trim()); });
 
-      document.getElementById('authorsDatalist').innerHTML = Array.from(authorsSet).sort((a,b) => a.localeCompare(b, 'pt-BR')).map(a => `<option value="${a}">`).join('');
+      const authorsArr = Array.from(authorsSet).sort((a,b) => a.localeCompare(b, 'pt-BR'));
+      document.getElementById('authorsDatalist').innerHTML = authorsArr.map(a => `<option value="${a}">`).join('');
       document.getElementById('seriesDatalist').innerHTML = Object.keys(seriesMap).sort((a,b) => a.localeCompare(b, 'pt-BR')).map(s => `<option value="${s}">`).join('');
       document.getElementById('publishersDatalist').innerHTML = Array.from(publishersSet).sort((a,b) => a.localeCompare(b, 'pt-BR')).map(p => `<option value="${p}">`).join('');
       document.getElementById('translatorsDatalist').innerHTML = Array.from(translatorsSet).sort((a,b) => a.localeCompare(b, 'pt-BR')).map(tr => `<option value="${tr}">`).join('');
+
+      const sorterAuthEl = document.getElementById('sorterAuthorFilter');
+      if (sorterAuthEl) {
+        sorterAuthEl.innerHTML = `<option value="all">Todos os Autores</option>` + authorsArr.map(a => `<option value="${a}">${a}</option>`).join('');
+      }
     }
 
     function escapeXml(unsafe) {
@@ -1157,6 +1223,7 @@
     }
 
     function save() {
+      syncStephenKingChallenge();
       localStorage.setItem('my_read_books', JSON.stringify(readBooks));
       localStorage.setItem('my_bought_books', JSON.stringify(boughtBooks));
       localStorage.setItem('my_donated_books', JSON.stringify(donatedBooks));
@@ -1197,6 +1264,16 @@
       const favCount = [...readBooks, ...boughtBooks].filter(b => b.isFavorite).length;
       const seriesCount = Object.keys(seriesStatuses).length;
 
+      // Contagem por Gêneros literários
+      const genreCounts = {};
+      const allReadAndBought = [...readBooks, ...boughtBooks];
+      allReadAndBought.forEach(b => {
+        if ((b.statusTag || b.status) === 'Lido' || readBooks.includes(b)) {
+          let g = b.fictionGenre || (b.typeVal == 12 ? 'Não Ficção' : 'Outros');
+          genreCounts[g] = (genreCounts[g] || 0) + 1;
+        }
+      });
+
       const getTier = (val, t1, t2, t3, t4) => {
         if (val >= t4) return { tier: '💎 Diamante', reward: 120 };
         if (val >= t3) return { tier: '🥇 Ouro', reward: 80 };
@@ -1210,12 +1287,28 @@
       const tFav = getTier(favCount, 3, 10, 20, 35);
       const tSeries = getTier(seriesCount, 1, 3, 7, 12);
 
-      return [
+      let trophies = [
         { title: "📚 Maratonista Literária", desc: "Acumule livros e textos lidos.", unlocked: tLidos.reward > 0, progress: `${totalLidosCount} lidos (${tLidos.tier})`, reward: tLidos.reward },
         { title: "📜 Devoradora de Páginas", desc: "Ultrapasse metas de páginas lidas.", unlocked: tPages.reward > 0, progress: `${totalPagesCount} págs (${tPages.tier})`, reward: tPages.reward },
         { title: "❤️ Colecionadora de Amores", desc: "Marque livros como seus favoritos.", unlocked: tFav.reward > 0, progress: `${favCount} favoritos (${tFav.tier})`, reward: tFav.reward },
         { title: "⚔️ Exploradora de Mundos", desc: "Acompanhe e conclua séries literárias.", unlocked: tSeries.reward > 0, progress: `${seriesCount} séries (${tSeries.tier})`, reward: tSeries.reward }
       ];
+
+      // Troféus por Gênero Literário
+      const availableGenres = ["Romance", "Terror", "Fantasia", "Clássicos", "Distopia", "Drama", "Erótico", "Comédia", "Ficção Científica", "Infanto-Juvenil", "Suspense", "Não Ficção"];
+      availableGenres.forEach(genre => {
+        let count = genreCounts[genre] || 0;
+        let tGenre = getTier(count, 1, 3, 6, 10);
+        trophies.push({
+          title: `📖 Mestra em ${genre}`,
+          desc: `Leia livros do gênero ${genre}.`,
+          unlocked: tGenre.reward > 0,
+          progress: `${count} lidos (${tGenre.tier})`,
+          reward: tGenre.reward
+        });
+      });
+
+      return trophies;
     }
 
     function calculateTrophyBonusPoints() { 
@@ -1376,6 +1469,8 @@
     function renderChallenges() {
       const container = document.getElementById('challengesContainer');
       container.innerHTML = '';
+      syncStephenKingChallenge();
+
       customChallenges.forEach((chal, cIndex) => {
         let itemsHtml = '', completedCount = 0;
         chal.books.forEach((bk, bIndex) => {
@@ -1400,18 +1495,18 @@
 
         const totalChal = chal.books.length, percentChal = totalChal > 0 ? Math.round((completedCount / totalChal) * 100) : 0;
         container.innerHTML += `
-          <details style="background:rgba(255,255,255,0.03); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
-            <summary style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:1.05rem; color:#c084fc;">${chal.title}</span>
+          <div style="background:rgba(255,255,255,0.03); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+              <span style="font-size:1.05rem; color:#c084fc; font-weight:bold;">${chal.title}</span>
               <div style="display:flex; align-items:center; gap:12px;">
                 <span style="font-size:0.8rem; color:var(--gold-bright); font-weight:bold;">${completedCount} / ${totalChal} (${percentChal}%)</span>
                 <button onclick="deleteEntireChallenge(${cIndex})" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:0.85rem;" title="Excluir Desafio Inteiro">🗑️ Excluir</button>
               </div>
-            </summary>
+            </div>
             <div style="background:rgba(0,0,0,0.4); border-radius:6px; height:8px; overflow:hidden; margin:12px 0;"><div style="background:var(--accent); height:100%; width:${percentChal}%;"></div></div>
             ${itemsHtml}
             ${addManualHtml}
-          </details>
+          </div>
         `;
       });
     }
@@ -1563,7 +1658,7 @@
           <div style="background:#0b0f19; border-radius:12px; border:1px solid rgba(255,255,255,0.08); overflow:hidden; padding:10px; display:flex; flex-direction:column; gap:8px;">
             <div style="height:140px; border-radius:8px; overflow:hidden; cursor:pointer;" onclick="openDiaryModal('${b.listType}', ${b.originalIndex})"><img src="${cover}" style="width:100%; height:100%; object-fit:cover;"></div>
             <div style="font-weight:bold; font-size:0.8rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${b.title}</div>
-            <button class="btn-primary" onclick="openDiaryModal('${b.listType}', ${b.originalIndex})" style="padding:6px; font-size:0.75rem;">📖 Diário</button>
+            <button class="btn-primary" onclick="openDiaryModal('${b.listType}', ${b.originalIndex})" style="padding:6px; font-size:0.75rem;">📖 Diário / Progresso</button>
           </div>
         `;
       });
@@ -1696,6 +1791,13 @@
       save(); renderGoals();
     }
 
+    function removePlannedBookFromGoal(year, index) {
+      if (confirm("Deseja remover este livro cadastrado incorretamente da meta?")) {
+        customGoals[year].plannedBooks.splice(index, 1);
+        save(); renderGoals();
+      }
+    }
+
     function renderGoals() {
       const year = document.getElementById('goalYearSelect').value;
       if (!customGoals[year]) customGoals[year] = { rewarded: false, plannedBooks: [] };
@@ -1712,7 +1814,14 @@
         let itemsHtml = '';
         catBooks.forEach(pb => {
           let globalIdx = planned.indexOf(pb);
-          itemsHtml += `<div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px; background:rgba(0,0,0,0.2); padding:4px 8px; border-radius:6px; font-size:0.78rem;"><span>${pb.completed ? '✅' : '⏳'} ${pb.title}</span><button onclick="toggleGoalBookCompletion('${year}', ${globalIdx})" style="background:none; border:none; color:var(--gold-bright); cursor:pointer; font-size:0.75rem;">${pb.completed ? 'Desmarcar' : 'Concluir (+15 pts)'}</button></div>`;
+          itemsHtml += `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px; background:rgba(0,0,0,0.2); padding:6px 8px; border-radius:6px; font-size:0.78rem;">
+              <span>${pb.completed ? '✅' : '⏳'} ${pb.title}</span>
+              <div style="display:flex; gap:6px;">
+                <button onclick="toggleGoalBookCompletion('${year}', ${globalIdx})" style="background:none; border:none; color:var(--gold-bright); cursor:pointer; font-size:0.75rem;">${pb.completed ? 'Desmarcar' : 'Concluir'}</button>
+                <button onclick="removePlannedBookFromGoal('${year}', ${globalIdx})" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:0.75rem;" title="Excluir livro errado">🗑️</button>
+              </div>
+            </div>`;
         });
         missionsListEl.innerHTML += `<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px; border-radius: 12px;"><div style="font-size:0.85rem; font-weight:bold; color:var(--accent);">${catName}</div>${itemsHtml || '<div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Nenhum livro planejado</div>'}</div>`;
       });
@@ -1723,10 +1832,28 @@
       if (year && !customGoals[year]) { customGoals[year] = { rewarded: false, plannedBooks: [] }; save(); renderGoals(); }
     }
 
-    function sortearProximaLeitura() {
-      const unread = [...readBooks, ...boughtBooks].filter(b => (b.statusTag || b.status) === 'Não Lido');
+    function sortearProximaLeituraAvancado() {
+      const catFilter = document.getElementById('sorterCategoryFilter').value;
+      const genreFilter = document.getElementById('sorterGenreFilter').value;
+      const authorFilter = document.getElementById('sorterAuthorFilter').value;
+
+      let unread = [...readBooks, ...boughtBooks].filter(b => (b.statusTag || b.status) === 'Não Lido');
+
+      if (catFilter !== 'all') {
+        unread = unread.filter(b => String(b.typeVal) === String(catFilter));
+      }
+      if (genreFilter !== 'all') {
+        unread = unread.filter(b => (b.fictionGenre || '') === genreFilter);
+      }
+      if (authorFilter !== 'all') {
+        unread = unread.filter(b => (b.author || '').toLowerCase().includes(authorFilter.toLowerCase()));
+      }
+
       const resEl = document.getElementById('sorteioResult');
-      if (unread.length === 0) { resEl.innerHTML = '<p style="color:var(--text-muted);">Nenhum livro não lido!</p>'; return; }
+      if (unread.length === 0) {
+        resEl.innerHTML = '<p style="color:var(--text-muted);">Nenhum livro encontrado com esses filtros na fila de não lidos!</p>';
+        return;
+      }
       const drawn = unread[Math.floor(Math.random() * unread.length)];
       confetti({ particleCount: 80, spread: 80, origin: { y: 0.7 } });
       resEl.innerHTML = `<div style="background: rgba(139, 92, 246, 0.15); border: 1px solid var(--accent); padding: 16px; border-radius: 12px; text-align: center;"><h3 style="margin:0; color:var(--gold-bright);">📖 ${drawn.title}</h3><div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Por <strong>${drawn.author}</strong></div><div style="font-size:0.8rem; color:var(--success); margin-top:6px; font-weight:bold;">Vale até +${drawn.points || 10} moedas!</div></div>`;
@@ -1858,10 +1985,52 @@
       const book = activeDiaryBook.list[activeDiaryBook.index];
       document.getElementById('modalBookTitle').textContent = book.title;
       document.getElementById('modalBookAuthor').textContent = book.author;
+      document.getElementById('modalPublisher').textContent = book.publisher || '-';
+      document.getElementById('modalFormat').textContent = book.format || '-';
+      document.getElementById('modalPages').textContent = book.pages || 0;
+      document.getElementById('modalStatus').textContent = book.statusTag || book.status || 'Lendo';
+      
+      document.getElementById('modalUpdateStatus').value = book.statusTag || book.status || 'Lendo';
+      document.getElementById('modalUpdateDate').value = book.lastUpdateDate || new Date().toISOString().slice(0,10);
+      document.getElementById('modalUpdatePagesRead').value = book.pagesRead || 0;
+
+      calculateRemainingModalPages();
       document.getElementById('diaryModal').style.display = 'flex';
     }
+
     function closeDiaryModal() { document.getElementById('diaryModal').style.display = 'none'; activeDiaryBook = null; }
-    function saveProgressEntry() { closeDiaryModal(); save(); alert('⚡ Salvo!'); }
+
+    function calculateRemainingModalPages() {
+      if (!activeDiaryBook) return;
+      const book = activeDiaryBook.list[activeDiaryBook.index];
+      const totalPages = parseInt(book.pages) || 0;
+      const readSoFar = parseInt(document.getElementById('modalUpdatePagesRead').value) || 0;
+      const remaining = Math.max(0, totalPages - readSoFar);
+      document.getElementById('modalPagesRemaining').textContent = `${remaining} páginas`;
+    }
+
+    function saveProgressEntry() {
+      if (!activeDiaryBook) return;
+      const book = activeDiaryBook.list[activeDiaryBook.index];
+      
+      const newStatus = document.getElementById('modalUpdateStatus').value;
+      const newDate = document.getElementById('modalUpdateDate').value;
+      const newPagesRead = parseInt(document.getElementById('modalUpdatePagesRead').value) || 0;
+
+      book.statusTag = newStatus;
+      book.status = newStatus;
+      book.lastUpdateDate = newDate;
+      book.pagesRead = newPagesRead;
+
+      if (newStatus === 'Lido' && !readBooks.includes(book) && activeDiaryBook.list === boughtBooks) {
+        boughtBooks.splice(activeDiaryBook.index, 1);
+        readBooks.push(book);
+      }
+
+      closeDiaryModal();
+      save();
+      alert('📈 Progresso atualizado com sucesso!');
+    }
 
     document.getElementById('unifiedBookForm').addEventListener('submit', (e) => {
       e.preventDefault();
@@ -1889,7 +2058,7 @@
       }
 
       const bookObj = {
-        title, author: authorStr, isOrganized: isOrg, pages, format, publisher, translator: translatorStr,
+        title, author: authorStr, isOrganized: isOrg, pages, pagesRead: 0, format, publisher, translator: translatorStr,
         points: base + bonus, typeVal: typeValInput, nonFictionSubcat: typeValInput == 12 ? document.getElementById('uniNonFictionSubcat').value : '',
         fictionGenre: typeValInput != 12 ? document.getElementById('uniFictionGenre').value : '',
         statusTag: statusInput, status: statusInput, isSeries, seriesName, seriesVol, seriesTotal, hasWoman, hasLatino, hasNew
