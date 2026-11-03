@@ -201,16 +201,18 @@
       </div>
     </div>
 
-    <!-- ABA 1: CADASTRO UNIFICADO -->
+    <!-- ABA 1: CADASTRO UNIFICADO (REORGANIZADO IGUAL AO MODAL DE EDIÇÃO) -->
     <div id="dashboardTab" class="tab-content active">
       <div class="grid">
         <div class="card">
           <h2>📖 Cadastro Unificado de Livro</h2>
           <form id="unifiedBookForm">
+            
+            <h3 class="section-header">📚 1. Dados Cadastrais Gerais</h3>
             <label>Título do Livro</label>
             <input type="text" id="uniTitle" required placeholder="Ex: Dom Casmurro">
 
-            <label>Autor(es) / Organizador(a)</label>
+            <label>Autor(es) / Organizado(a)</label>
             <div class="inline-fields">
               <input type="text" id="uniAuthor1" list="authorsDatalist" required placeholder="Autor 1 Principal *" autocomplete="off">
               <input type="text" id="uniAuthor2" list="authorsDatalist" placeholder="Autor 2 (Opcional)" autocomplete="off">
@@ -220,6 +222,18 @@
               <label class="checkbox-label"><input type="checkbox" id="uniIsOrganized"> Marcar como "Org. por"</label>
             </div>
 
+            <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; margin-top: 10px;">
+              <label style="margin-top:0;"><input type="checkbox" id="uniIsSeries" onchange="toggleSeriesInputs('unifiedBookForm')"> Faz parte de série?</label>
+              <div id="seriesFields_unifiedBookForm" style="display:none; margin-top: 8px;">
+                <input type="text" id="uniSeriesName" list="seriesDatalist" placeholder="Nome da Série..." autocomplete="off">
+                <div class="inline-fields" style="margin-top: 6px;">
+                  <input type="number" id="uniSeriesVol" placeholder="Vol. Atual">
+                  <input type="number" id="uniSeriesTotal" placeholder="Total Vol.">
+                </div>
+              </div>
+            </div>
+
+            <h3 class="section-header">📖 2. Dados da Edição</h3>
             <div class="inline-fields">
               <div>
                 <label>Páginas Totais</label>
@@ -234,7 +248,16 @@
               </div>
             </div>
 
+            <label>Editora</label>
+            <input type="text" id="uniPublisher" list="publishersDatalist" placeholder="Ex: Companhia das Letras..." autocomplete="off">
+
+            <label>Tradutor(es)</label>
             <div class="inline-fields">
+              <input type="text" id="uniTranslator1" list="translatorsDatalist" placeholder="Tradutor 1 (Opcional)" autocomplete="off">
+              <input type="text" id="uniTranslator2" list="translatorsDatalist" placeholder="Tradutor 2 (Opcional)" autocomplete="off">
+            </div>
+
+            <div class="inline-fields" style="margin-top: 10px;">
               <div>
                 <label>Possui na Estante?</label>
                 <select id="uniHasStock" onchange="toggleStockOptions()">
@@ -254,15 +277,7 @@
               </div>
             </div>
 
-            <label>Status de Leitura</label>
-            <select id="uniStatus">
-              <option value="Lido">Lido</option>
-              <option value="Não Lido">Não lido (Fila)</option>
-              <option value="Lendo">Lendo</option>
-              <option value="Relendo">Relendo</option>
-              <option value="Abandonado">Abandonado</option>
-            </select>
-
+            <h3 class="section-header">💡 3. Classificação & Pontuação</h3>
             <label>Categoria de Pontuação</label>
             <select id="uniType" onchange="toggleSubcategories('unifiedBookForm')">
               <option value="10">Livro Padrão (+10)</option>
@@ -304,16 +319,25 @@
               </select>
             </div>
 
-            <label>Editora</label>
-            <input type="text" id="uniPublisher" list="publishersDatalist" placeholder="Ex: Companhia das Letras..." autocomplete="off">
-
-            <label>Tradutor(es)</label>
-            <div class="inline-fields">
-              <input type="text" id="uniTranslator1" list="translatorsDatalist" placeholder="Tradutor 1 (Opcional)" autocomplete="off">
-              <input type="text" id="uniTranslator2" list="translatorsDatalist" placeholder="Tradutor 2 (Opcional)" autocomplete="off">
+            <label>Bônus de Leitura Aplicados</label>
+            <div class="checkbox-group">
+              <label class="checkbox-label"><input type="checkbox" id="uniBonusWoman"> Autora Mulher (+5)</label>
+              <label class="checkbox-label"><input type="checkbox" id="uniBonusLatino"> Latino / PT / Nacional (+5)</label>
+              <label class="checkbox-label"><input type="checkbox" id="uniBonusNew"> Autor Inédito (+5)</label>
             </div>
 
-            <div class="inline-fields" style="margin-top: 10px;">
+            <h3 class="section-header">🚩 4. Status de Leitura & Avaliação</h3>
+            <div class="inline-fields">
+              <div>
+                <label>Status de Leitura</label>
+                <select id="uniStatus">
+                  <option value="Lido">Lido</option>
+                  <option value="Não Lido">Não lido (Fila)</option>
+                  <option value="Lendo">Lendo</option>
+                  <option value="Relendo">Relendo</option>
+                  <option value="Abandonado">Abandonado</option>
+                </select>
+              </div>
               <div>
                 <label>⭐ Avaliação (Estrelas)</label>
                 <select id="uniRating">
@@ -325,44 +349,27 @@
                   <option value="5">⭐⭐⭐⭐⭐ 5 Estrelas</option>
                 </select>
               </div>
-              <div style="display: flex; align-items: center; justify-content: center; padding-top: 20px;">
-                <label class="checkbox-label" style="font-size: 0.9rem; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 8px 12px; border-radius: 10px; width: 100%;">
-                  <input type="checkbox" id="uniIsFavorite"> ❤️ Marcar como favorito
-                </label>
-              </div>
             </div>
 
-            <div class="inline-fields">
+            <div style="margin-top: 10px;">
+              <label class="checkbox-label" style="font-size: 0.9rem; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 8px 12px; border-radius: 10px; width: 100%;">
+                <input type="checkbox" id="uniIsFavorite"> ❤️ Marcar como favorito
+              </label>
+            </div>
+
+            <div class="inline-fields" style="margin-top: 10px;">
               <div>
                 <label>Data de Início</label>
                 <input type="date" id="uniStartDate">
               </div>
               <div>
-                <label>Data de Fim (Finalização)</label>
+                <label>Data Fim (Conclusão)</label>
                 <input type="date" id="uniEndDate">
               </div>
             </div>
 
-            <label>Impressões / Comentários</label>
+            <label>Comentários / Observações</label>
             <textarea id="uniComment" placeholder="Suas impressões sobre a leitura..."></textarea>
-
-            <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; margin-top: 10px;">
-              <label style="margin-top:0;"><input type="checkbox" id="uniIsSeries" onchange="toggleSeriesInputs('unifiedBookForm')"> Faz parte de série?</label>
-              <div id="seriesFields_unifiedBookForm" style="display:none; margin-top: 8px;">
-                <input type="text" id="uniSeriesName" list="seriesDatalist" placeholder="Nome da Série..." autocomplete="off">
-                <div class="inline-fields" style="margin-top: 6px;">
-                  <input type="number" id="uniSeriesVol" placeholder="Vol. Atual">
-                  <input type="number" id="uniSeriesTotal" placeholder="Total Vol.">
-                </div>
-              </div>
-            </div>
-
-            <label>Bônus de Leitura</label>
-            <div class="checkbox-group">
-              <label class="checkbox-label"><input type="checkbox" id="uniBonusWoman"> Autora Mulher (+5)</label>
-              <label class="checkbox-label"><input type="checkbox" id="uniBonusLatino"> Latino / PT / Nacional (+5)</label>
-              <label class="checkbox-label"><input type="checkbox" id="uniBonusNew"> Autor Inédito (+5)</label>
-            </div>
 
             <button type="submit" class="btn-primary" style="margin-top: 16px;">⚡ Cadastrar Livro</button>
           </form>
@@ -578,14 +585,14 @@
       </div>
     </div>
 
-    <!-- ABA 6: SÉRIES LITERÁRIAS -->
+    <!-- ABA 6: SÉRIES LITERÁRIAS (COM STATUS "NÃO INICIADA" E PONTUAÇÃO AUTOMÁTICA) -->
     <div id="seriesTab" class="tab-content">
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
-          <h2 style="margin:0;">📚 Controle de Séries Literárias</h2>
+          <h2 style="margin:0;">📚 Controle de Séries Literárias (+30 pts ao concluir)</h2>
           <button class="backup-btn" onclick="cleanOrphanSeries()" title="Remover séries que não possuem livros">🧹 Limpar Séries Órfãs</button>
         </div>
-        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Acompanhe o andamento das séries cadastradas. Organizadas por status (Em andamento ➔ Hiato ➔ Concluída ➔ Abandonada):</p>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Acompanhe o andamento das séries cadastradas. Séries concluídas garantem <strong>+30 moedas</strong> de bônus automático!</p>
         <div id="seriesTrackingList" style="display:flex; flex-direction:column; gap:16px;"></div>
       </div>
     </div>
@@ -741,7 +748,7 @@
                 <li><strong>Autor Inédito:</strong> +5 moedas</li>
                 <li><strong>Nacional / Latino extra:</strong> +5 moedas</li>
                 <li><strong>Bônus de Páginas:</strong> +50 moedas a cada 1.000 páginas lidas acumuladas</li>
-                <li><strong>Conclusão de Série:</strong> +30 moedas ao ler o último volume</li>
+                <li><strong>Conclusão de Série:</strong> +30 moedas ao marcar a série como Concluída</li>
                 <li><strong>Doação de Livro:</strong> +20 moedas</li>
               </ul>
             </div>
@@ -769,7 +776,7 @@
     </div>
   </div>
 
-  <!-- MODAL DE DIÁRIO DE LEITURA (ATUALIZADO) -->
+  <!-- MODAL DE DIÁRIO DE LEITURA -->
   <div class="modal" id="diaryModal">
     <div class="modal-content">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 12px;">
@@ -808,7 +815,7 @@
     </div>
   </div>
 
-  <!-- MODAL DE EDIÇÃO DE LIVRO 100% COMPLETO -->
+  <!-- MODAL DE EDIÇÃO DE LIVRO -->
   <div class="modal" id="editModal">
     <div class="modal-content">
       <h2 style="margin-bottom: 4px;">✏️ Editar Cadastro Completo do Livro</h2>
@@ -818,7 +825,7 @@
         <label>Título do Livro</label>
         <input type="text" id="editTitle" required>
 
-        <label>Autor(es) / Organizador(a)</label>
+        <label>Autor(es) / Organizado(a)</label>
         <div class="inline-fields">
           <input type="text" id="editAuthor1" list="authorsDatalist" required placeholder="Autor 1 Principal *" autocomplete="off">
           <input type="text" id="editAuthor2" list="authorsDatalist" placeholder="Autor 2 (Opcional)" autocomplete="off">
@@ -1091,8 +1098,17 @@
       document.getElementById('uniCostGroup').style.display = (hasStock !== 'nao') ? 'block' : 'none';
     }
 
+    function toggleSeriesInputs(formId) {
+      const isUnified = (formId === 'unifiedBookForm');
+      const checkbox = document.getElementById(isUnified ? 'uniIsSeries' : 'editIsSeries');
+      const fieldsGroup = document.getElementById(isUnified ? 'seriesFields_unifiedBookForm' : 'editSeriesFields');
+      if (checkbox && fieldsGroup) {
+        fieldsGroup.style.display = checkbox.checked ? 'block' : 'none';
+      }
+    }
+
     function toggleEditSeriesInputs() {
-      document.getElementById('editSeriesFields').style.display = document.getElementById('editIsSeries').checked ? 'block' : 'none';
+      toggleSeriesInputs('editForm');
     }
 
     function toggleSubcategories(formId) {
@@ -1264,7 +1280,6 @@
       const favCount = [...readBooks, ...boughtBooks].filter(b => b.isFavorite).length;
       const seriesCount = Object.keys(seriesStatuses).length;
 
-      // Contagem por Gêneros literários
       const genreCounts = {};
       const allReadAndBought = [...readBooks, ...boughtBooks];
       allReadAndBought.forEach(b => {
@@ -1294,7 +1309,6 @@
         { title: "⚔️ Exploradora de Mundos", desc: "Acompanhe e conclua séries literárias.", unlocked: tSeries.reward > 0, progress: `${seriesCount} séries (${tSeries.tier})`, reward: tSeries.reward }
       ];
 
-      // Troféus por Gênero Literário
       const availableGenres = ["Romance", "Terror", "Fantasia", "Clássicos", "Distopia", "Drama", "Erótico", "Comédia", "Ficção Científica", "Infanto-Juvenil", "Suspense", "Não Ficção"];
       availableGenres.forEach(genre => {
         let count = genreCounts[genre] || 0;
@@ -1315,6 +1329,14 @@
       return getTrophiesData().filter(t => t.unlocked).reduce((acc, t) => acc + (t.reward || 30), 0); 
     }
 
+    function calculateCompletedSeriesBonus() {
+      let count = 0;
+      for (let sName in seriesStatuses) {
+        if (seriesStatuses[sName] === 'Concluída') count++;
+      }
+      return count * 30;
+    }
+
     function openBookPreviewModal(listType, originalIndex) {
       const list = listType === 'read' ? readBooks : (listType === 'bought' ? boughtBooks : donatedBooks);
       const b = list[originalIndex];
@@ -1332,11 +1354,18 @@
           🪙 Pontos Conquistados: +${pts} moedas
         </div>
         <div><strong>Categoria:</strong> ${b.typeVal == 12 ? 'Não Ficção' : (b.fictionGenre || 'Ficção')}</div>
-        <div><strong>Status:</strong> ${b.statusTag || b.status || 'Lido'} | <strong>Páginas:</strong> ${b.pages || 0}</div>
+        <div><strong>Status:</strong> ${b.statusTag || b.status || 'Lido'} | <strong>Páginas:</strong> ${b.pages || 0} (${b.pagesRead || 0} lidas)</div>
       `;
-      if (b.isSeries) detailsHtml += `<div><strong>Série:</strong> ${b.seriesName} (Vol. ${b.seriesVol}/${b.seriesTotal})</div>`;
+      if (b.isSeries && b.seriesName) {
+        detailsHtml += `<div><strong>Série:</strong> ${b.seriesName} (Vol. ${b.seriesVol || 1}/${b.seriesTotal || 1})</div>`;
+      }
       if (b.translator) detailsHtml += `<div><strong>Tradução:</strong> ${b.translator}</div>`;
       if (b.publisher) detailsHtml += `<div><strong>Editora:</strong> ${b.publisher}</div>`;
+      if (b.format) detailsHtml += `<div><strong>Formato:</strong> ${b.format}</div>`;
+      if (b.rating) detailsHtml += `<div><strong>Avaliação:</strong> ${'⭐'.repeat(b.rating)}</div>`;
+      if (b.isFavorite) detailsHtml += `<div><strong>Favorito:</strong> ❤️ Sim</div>`;
+      if (b.startDate || b.endDate) detailsHtml += `<div><strong>Datas:</strong> ${b.startDate || 'S/D'} até ${b.endDate || 'S/D'}</div>`;
+      if (b.comment) detailsHtml += `<div style="margin-top:6px; font-style:italic; color:var(--text-muted);">"${b.comment}"</div>`;
       
       document.getElementById('previewDetails').innerHTML = detailsHtml;
       document.getElementById('previewBtnEdit').onclick = () => { closeBookPreviewModal(); openEditModal(listType, originalIndex); };
@@ -1366,7 +1395,8 @@
         return acc + pts;
       }, 0);
 
-      const pointsGained = readBooks.reduce((acc, b) => acc + b.points, 0) + customTexts.reduce((acc, t) => acc + (t.points || 5), 0) + pageBonusPoints + (donatedBooks.length * 20) + goalPoints + calculateTrophyBonusPoints();
+      const seriesBonusPoints = calculateCompletedSeriesBonus();
+      const pointsGained = readBooks.reduce((acc, b) => acc + b.points, 0) + customTexts.reduce((acc, t) => acc + (t.points || 5), 0) + pageBonusPoints + (donatedBooks.length * 20) + goalPoints + calculateTrophyBonusPoints() + seriesBonusPoints;
       const pointsSpent = boughtBooks.reduce((acc, b) => acc + b.cost, 0);
 
       document.getElementById('totalPoints').textContent = pointsGained - pointsSpent;
@@ -1692,17 +1722,17 @@
         return;
       }
 
-      const statusOrder = { 'Em Andamento': 1, 'Hiato': 2, 'Concluída': 3, 'Abandonada': 4 };
+      const statusOrder = { 'Não Iniciada': 1, 'Em Andamento': 2, 'Hiato': 3, 'Concluída': 4, 'Abandonada': 5 };
       seriesKeys.sort((a, b) => {
-        const statA = seriesStatuses[a] || 'Em Andamento', statB = seriesStatuses[b] || 'Em Andamento';
-        const rankA = statusOrder[statA] || 5, rankB = statusOrder[statB] || 5;
+        const statA = seriesStatuses[a] || 'Não Iniciada', statB = seriesStatuses[b] || 'Não Iniciada';
+        const rankA = statusOrder[statA] || 6, rankB = statusOrder[statB] || 6;
         if (rankA !== rankB) return rankA - rankB;
         return a.localeCompare(b, 'pt-BR');
       });
 
       seriesKeys.forEach(sName => {
         const data = seriesMap[sName];
-        if (!seriesStatuses[sName]) seriesStatuses[sName] = 'Em Andamento';
+        if (!seriesStatuses[sName]) seriesStatuses[sName] = 'Não Iniciada';
         if (!seriesCheckedBooks[sName]) seriesCheckedBooks[sName] = {};
 
         const totalVol = Math.max(data.maxVol, data.volumesRead.size, 1);
@@ -1716,18 +1746,23 @@
           checkBoxesHtml += `<label style="display:inline-flex; align-items:center; gap:4px; font-size:0.75rem; background:rgba(255,255,255,0.04); padding:4px 8px; border-radius:6px; cursor:pointer;" title="Vol. ${i}"><input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleSeriesVolumeCheck('${sName}', ${i})"> Vol. ${i}</label>`;
         }
 
+        const isCompleted = (seriesStatuses[sName] === 'Concluída');
+
         seriesContainer.innerHTML += `
           <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
               <div style="font-weight:bold; font-size:0.95rem; color:var(--text); display:flex; align-items:center; gap:8px;">
                 <span>📖 ${sName}</span>
+                ${isCompleted ? '<span style="font-size:0.75rem; background:rgba(245,158,11,0.2); color:var(--gold-bright); padding:2px 8px; border-radius:6px; border:1px solid rgba(245,158,11,0.4);">🪙 +30 pts</span>' : ''}
+                <button onclick="editSeriesTotalVolumes('${sName}', ${totalVol})" style="background:none; border:none; color:var(--gold-bright); cursor:pointer; font-size:0.8rem;" title="Editar Total de Volumes">✏️ ${totalVol} vol(s)</button>
                 <button onclick="deleteSeriesRecord('${sName}')" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:0.8rem;" title="Excluir série">🗑️</button>
               </div>
               <div style="display:flex; align-items:center; gap:10px;">
                 <select onchange="updateSeriesStatus('${sName}', this.value)" style="padding:4px 8px; font-size:0.75rem; border-radius:6px; background:#0b0f19; color:var(--text);">
-                  <option value="Em Andamento" ${seriesStatuses[sName] === 'Em Andamento' ? 'selected' : ''}>⏳ Em Andamento</option>
+                  <option value="Não Iniciada" ${seriesStatuses[sName] === 'Não Iniciada' ? 'selected' : ''}>⏳ Não Iniciada</option>
+                  <option value="Em Andamento" ${seriesStatuses[sName] === 'Em Andamento' ? 'selected' : ''}>📖 Em Andamento</option>
                   <option value="Hiato" ${seriesStatuses[sName] === 'Hiato' ? 'selected' : ''}>⏸️ Hiato</option>
-                  <option value="Concluída" ${seriesStatuses[sName] === 'Concluída' ? 'selected' : ''}>✅ Concluída</option>
+                  <option value="Concluída" ${seriesStatuses[sName] === 'Concluída' ? 'selected' : ''}>✅ Concluída (+30 pts)</option>
                   <option value="Abandonada" ${seriesStatuses[sName] === 'Abandonada' ? 'selected' : ''}>❌ Abandonada</option>
                 </select>
                 <span style="font-size:0.8rem; color:var(--gold-bright); font-weight:bold;">${checkedCount} / ${totalVol} (${percentSeries}%)</span>
@@ -1740,12 +1775,35 @@
       });
     }
 
+    function editSeriesTotalVolumes(sName, currentTotal) {
+      const newTotal = prompt(`Alterar número total de volumes da série "${sName}":`, currentTotal);
+      if (newTotal && !isNaN(newTotal) && parseInt(newTotal) > 0) {
+        const parsedTotal = parseInt(newTotal);
+        [...readBooks, ...boughtBooks].forEach(b => {
+          if (b.isSeries && b.seriesName && b.seriesName.trim().toLowerCase() === sName.toLowerCase()) {
+            b.seriesTotal = parsedTotal;
+          }
+        });
+        save();
+        renderSeriesTab();
+      }
+    }
+
     function toggleSeriesVolumeCheck(seriesName, volNum) {
       if (!seriesCheckedBooks[seriesName]) seriesCheckedBooks[seriesName] = {};
       seriesCheckedBooks[seriesName][volNum] = !seriesCheckedBooks[seriesName][volNum];
       save(); renderSeriesTab();
     }
-    function updateSeriesStatus(seriesName, status) { seriesStatuses[seriesName] = status; save(); renderSeriesTab(); }
+
+    function updateSeriesStatus(seriesName, status) {
+      const prevStatus = seriesStatuses[seriesName];
+      seriesStatuses[seriesName] = status;
+      if (status === 'Concluída' && prevStatus !== 'Concluída') {
+        confetti({ particleCount: 80, spread: 80, origin: { y: 0.7 } });
+      }
+      save(); renderSeriesTab();
+    }
+
     function deleteSeriesRecord(seriesName) {
       if (confirm(`Remover registros da série "${seriesName}"?`)) {
         delete seriesStatuses[seriesName]; delete seriesCheckedBooks[seriesName];
@@ -1753,6 +1811,7 @@
         save(); renderSeriesTab();
       }
     }
+
     function cleanOrphanSeries() {
       const activeNames = new Set();
       [...readBooks, ...boughtBooks].forEach(b => { if (b.isSeries && b.seriesName) activeNames.add(b.seriesName.trim().toLowerCase()); });
@@ -1950,6 +2009,9 @@
         book.seriesName = document.getElementById('editSeriesName').value;
         book.seriesVol = parseInt(document.getElementById('editSeriesVol').value) || 1;
         book.seriesTotal = parseInt(document.getElementById('editSeriesTotal').value) || 1;
+        if (book.seriesName.trim()) {
+          if (!seriesStatuses[book.seriesName.trim()]) seriesStatuses[book.seriesName.trim()] = 'Em Andamento';
+        }
       } else { book.seriesName = ''; book.seriesVol = 0; book.seriesTotal = 0; }
 
       book.pages = parseInt(document.getElementById('editPages').value) || 0;
@@ -2047,21 +2109,32 @@
       const t1 = document.getElementById('uniTranslator1').value, t2 = document.getElementById('uniTranslator2').value;
       const translatorStr = [t1, t2].filter(t => t.trim()).join(', ');
 
+      const rating = parseInt(document.getElementById('uniRating').value) || 0;
+      const isFavorite = document.getElementById('uniIsFavorite').checked;
+      const startDate = document.getElementById('uniStartDate').value;
+      const endDate = document.getElementById('uniEndDate').value;
+      const comment = document.getElementById('uniComment').value;
+
       const base = parseBasePoints(typeValInput), isSeries = document.getElementById('uniIsSeries').checked;
       const hasWoman = document.getElementById('uniBonusWoman').checked, hasLatino = document.getElementById('uniBonusLatino').checked, hasNew = document.getElementById('uniBonusNew').checked;
       let bonus = (hasWoman ? 5 : 0) + (hasLatino || typeValInput == 15 ? 5 : 0) + (hasNew ? 5 : 0);
+      
       let seriesName = '', seriesVol = 0, seriesTotal = 0;
       if (isSeries) {
         seriesName = document.getElementById('uniSeriesName').value;
         seriesVol = parseInt(document.getElementById('uniSeriesVol').value) || 1;
         seriesTotal = parseInt(document.getElementById('uniSeriesTotal').value) || 1;
+        if (seriesName.trim()) {
+          if (!seriesStatuses[seriesName.trim()]) seriesStatuses[seriesName.trim()] = 'Em Andamento';
+        }
       }
 
       const bookObj = {
         title, author: authorStr, isOrganized: isOrg, pages, pagesRead: 0, format, publisher, translator: translatorStr,
         points: base + bonus, typeVal: typeValInput, nonFictionSubcat: typeValInput == 12 ? document.getElementById('uniNonFictionSubcat').value : '',
         fictionGenre: typeValInput != 12 ? document.getElementById('uniFictionGenre').value : '',
-        statusTag: statusInput, status: statusInput, isSeries, seriesName, seriesVol, seriesTotal, hasWoman, hasLatino, hasNew
+        statusTag: statusInput, status: statusInput, rating, isFavorite, startDate, endDate, comment,
+        isSeries, seriesName, seriesVol, seriesTotal, hasWoman, hasLatino, hasNew
       };
 
       if (hasStock !== 'nao') {
@@ -2072,7 +2145,11 @@
       }
 
       confetti({ particleCount: 70, spread: 80, origin: { y: 0.8 } });
-      e.target.reset(); toggleStockOptions(); save(); alert('⚡ Livro cadastrado!');
+      e.target.reset(); 
+      toggleStockOptions(); 
+      toggleSeriesInputs('unifiedBookForm'); 
+      save(); 
+      alert('⚡ Livro cadastrado com sucesso!');
     });
 
     updateDatalists(); render(); renderTextsModule(); renderChallenges(); renderSeriesTab(); renderTrophies();
