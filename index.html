@@ -150,6 +150,7 @@
   <datalist id="seriesDatalist"></datalist>
   <datalist id="publishersDatalist"></datalist>
   <datalist id="translatorsDatalist"></datalist>
+  <datalist id="allBooksDatalist"></datalist>
 
   <div class="container">
     <header>
@@ -201,7 +202,7 @@
       </div>
     </div>
 
-    <!-- ABA 1: CADASTRO UNIFICADO (REORGANIZADO IGUAL AO MODAL DE EDIÇÃO) -->
+    <!-- ABA 1: CADASTRO UNIFICADO -->
     <div id="dashboardTab" class="tab-content active">
       <div class="grid">
         <div class="card">
@@ -225,7 +226,7 @@
             <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; margin-top: 10px;">
               <label style="margin-top:0;"><input type="checkbox" id="uniIsSeries" onchange="toggleSeriesInputs('unifiedBookForm')"> Faz parte de série?</label>
               <div id="seriesFields_unifiedBookForm" style="display:none; margin-top: 8px;">
-                <input type="text" id="uniSeriesName" list="seriesDatalist" placeholder="Nome da Série..." autocomplete="off">
+                <input type="text" id="uniSeriesName" list="seriesDatalist" placeholder="Nome da Série..." autocomplete="off" oninput="autofillSeriesTotal('unifiedBookForm')">
                 <div class="inline-fields" style="margin-top: 6px;">
                   <input type="number" id="uniSeriesVol" placeholder="Vol. Atual">
                   <input type="number" id="uniSeriesTotal" placeholder="Total Vol.">
@@ -585,14 +586,14 @@
       </div>
     </div>
 
-    <!-- ABA 6: SÉRIES LITERÁRIAS (COM STATUS "NÃO INICIADA" E PONTUAÇÃO AUTOMÁTICA) -->
+    <!-- ABA 6: SÉRIES LITERÁRIAS -->
     <div id="seriesTab" class="tab-content">
       <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
           <h2 style="margin:0;">📚 Controle de Séries Literárias (+30 pts ao concluir)</h2>
           <button class="backup-btn" onclick="cleanOrphanSeries()" title="Remover séries que não possuem livros">🧹 Limpar Séries Órfãs</button>
         </div>
-        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Acompanhe o andamento das séries cadastradas. Séries concluídas garantem <strong>+30 moedas</strong> de bônus automático!</p>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Acompanhe o andamento das séries cadastradas, divididas por blocos de status. Séries concluídas garantem <strong>+30 moedas</strong> de bônus automático!</p>
         <div id="seriesTrackingList" style="display:flex; flex-direction:column; gap:16px;"></div>
       </div>
     </div>
@@ -838,7 +839,7 @@
         <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; margin-top: 10px;">
           <label style="margin-top:0;"><input type="checkbox" id="editIsSeries" onchange="toggleEditSeriesInputs()"> Faz parte de uma Série?</label>
           <div id="editSeriesFields" style="display:none; margin-top: 8px;">
-            <input type="text" id="editSeriesName" list="seriesDatalist" placeholder="Nome da Série..." autocomplete="off">
+            <input type="text" id="editSeriesName" list="seriesDatalist" placeholder="Nome da Série..." autocomplete="off" oninput="autofillSeriesTotal('editForm')">
             <div class="inline-fields" style="margin-top: 6px;">
               <input type="number" id="editSeriesVol" placeholder="Vol. Atual">
               <input type="number" id="editSeriesTotal" placeholder="Total Vol.">
@@ -1019,6 +1020,8 @@
     let customGoals = JSON.parse(localStorage.getItem('my_custom_goals')) || { "2026": { rewarded: false, plannedBooks: [] } };
     let seriesStatuses = JSON.parse(localStorage.getItem('my_series_statuses')) || {};
     let seriesCheckedBooks = JSON.parse(localStorage.getItem('my_series_checked_books')) || {};
+    let seriesSectionToggles = JSON.parse(localStorage.getItem('my_series_section_toggles')) || {};
+    let challengesSectionToggles = JSON.parse(localStorage.getItem('my_challenges_section_toggles')) || {};
 
     let defaultChallenges = [
       { id: 'austen', title: 'Desafio Jane Austen (Romances e Obras Inacabadas)', books: [
@@ -1091,6 +1094,7 @@
         const isRead = (b.statusTag || b.status) === 'Lido' || readBooks.includes(b);
         return { title: `${b.title} (${b.author})`, read: isRead };
       });
+      kingChallenge.books.sort((a,b) => a.title.localeCompare(b.title, 'pt-BR'));
     }
 
     function toggleStockOptions() {
@@ -1111,6 +1115,28 @@
       toggleSeriesInputs('editForm');
     }
 
+    function autofillSeriesTotal(formId) {
+      const isUnified = (formId === 'unifiedBookForm');
+      const nameInput = document.getElementById(isUnified ? 'uniSeriesName' : 'editSeriesName');
+      const totalInput = document.getElementById(isUnified ? 'uniSeriesTotal' : 'editSeriesTotal');
+      if (!nameInput || !totalInput) return;
+
+      const typedName = nameInput.value.trim().toLowerCase();
+      if (!typedName) return;
+
+      let maxFound = 0;
+      [...readBooks, ...boughtBooks].forEach(b => {
+        if (b.isSeries && b.seriesName && b.seriesName.trim().toLowerCase() === typedName) {
+          const tot = parseInt(b.seriesTotal) || 0;
+          if (tot > maxFound) maxFound = tot;
+        }
+      });
+
+      if (maxFound > 0 && !totalInput.value) {
+        totalInput.value = maxFound;
+      }
+    }
+
     function toggleSubcategories(formId) {
       let typeEl = document.getElementById(formId === 'unifiedBookForm' ? 'uniType' : 'editType');
       let nonFicGroup = document.getElementById(formId === 'unifiedBookForm' ? 'nonFictionSubGroup_unifiedBookForm' : 'nonFictionSubGroup_editForm');
@@ -1125,11 +1151,12 @@
     }
 
     function updateDatalists() {
-      const authorsSet = new Set(), seriesMap = {}, publishersSet = new Set(), translatorsSet = new Set();
+      const authorsSet = new Set(), seriesMap = {}, publishersSet = new Set(), translatorsSet = new Set(), allBooksSet = new Set();
       [...readBooks, ...boughtBooks, ...donatedBooks].forEach(b => {
         if (b.author && b.author.trim()) authorsSet.add(b.author.trim());
         if (b.publisher && b.publisher.trim()) publishersSet.add(b.publisher.trim());
         if (b.translator && b.translator.trim()) translatorsSet.add(b.translator.trim());
+        if (b.title && b.title.trim()) allBooksSet.add(`${b.title.trim()} (${b.author || 'Autor desconhecido'})`);
         if (b.isSeries && b.seriesName && b.seriesName.trim()) {
           const sName = b.seriesName.trim();
           const tot = parseInt(b.seriesTotal) || 0;
@@ -1143,6 +1170,7 @@
       document.getElementById('seriesDatalist').innerHTML = Object.keys(seriesMap).sort((a,b) => a.localeCompare(b, 'pt-BR')).map(s => `<option value="${s}">`).join('');
       document.getElementById('publishersDatalist').innerHTML = Array.from(publishersSet).sort((a,b) => a.localeCompare(b, 'pt-BR')).map(p => `<option value="${p}">`).join('');
       document.getElementById('translatorsDatalist').innerHTML = Array.from(translatorsSet).sort((a,b) => a.localeCompare(b, 'pt-BR')).map(tr => `<option value="${tr}">`).join('');
+      document.getElementById('allBooksDatalist').innerHTML = Array.from(allBooksSet).sort((a,b) => a.localeCompare(b, 'pt-BR')).map(bk => `<option value="${bk}">`).join('');
 
       const sorterAuthEl = document.getElementById('sorterAuthorFilter');
       if (sorterAuthEl) {
@@ -1247,6 +1275,8 @@
       localStorage.setItem('my_custom_goals', JSON.stringify(customGoals));
       localStorage.setItem('my_series_statuses', JSON.stringify(seriesStatuses));
       localStorage.setItem('my_series_checked_books', JSON.stringify(seriesCheckedBooks));
+      localStorage.setItem('my_series_section_toggles', JSON.stringify(seriesSectionToggles));
+      localStorage.setItem('my_challenges_section_toggles', JSON.stringify(challengesSectionToggles));
       localStorage.setItem('my_custom_challenges', JSON.stringify(customChallenges));
       updateDatalists(); render();
     }
@@ -1502,6 +1532,9 @@
       syncStephenKingChallenge();
 
       customChallenges.forEach((chal, cIndex) => {
+        // Ordena os livros do desafio em ordem alfabética automaticamente
+        chal.books.sort((a, b) => a.title.localeCompare(b.title, 'pt-BR'));
+
         let itemsHtml = '', completedCount = 0;
         chal.books.forEach((bk, bIndex) => {
           if (bk.read) completedCount++;
@@ -1516,29 +1549,42 @@
           `;
         });
 
-        let addManualHtml = `
-          <div style="display:flex; gap:8px; margin-top:10px;">
-            <input type="text" id="manualItem_${cIndex}" placeholder="Adicionar título/autor manualmente..." style="padding:6px; font-size:0.8rem;">
-            <button class="btn-primary" onclick="addManualChallengeItem(${cIndex})" style="width:auto; padding:6px 12px; font-size:0.8rem;">➕ Adicionar</button>
+        // Sistema simples de pesquisa com datalist (igual ao formulário de cadastro)
+        let addSearchHtml = `
+          <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; align-items:center;">
+            <input type="text" id="inputBookForChal_${cIndex}" list="allBooksDatalist" placeholder="🔍 Digite para pesquisar ou selecionar livro..." autocomplete="off" style="flex:1; padding:8px 10px; font-size:0.82rem;">
+            <button class="btn-primary" onclick="addSiteBookToChallenge(${cIndex})" style="width:auto; padding:8px 16px; font-size:0.82rem;">➕ Adicionar ao Desafio</button>
           </div>
         `;
 
         const totalChal = chal.books.length, percentChal = totalChal > 0 ? Math.round((completedCount / totalChal) * 100) : 0;
+        const isExpanded = challengesSectionToggles[chal.id] !== false;
+
         container.innerHTML += `
           <div style="background:rgba(255,255,255,0.03); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
               <span style="font-size:1.05rem; color:#c084fc; font-weight:bold;">${chal.title}</span>
               <div style="display:flex; align-items:center; gap:12px;">
                 <span style="font-size:0.8rem; color:var(--gold-bright); font-weight:bold;">${completedCount} / ${totalChal} (${percentChal}%)</span>
+                <button class="backup-btn" onclick="toggleChallengeSection('${chal.id}')" style="padding: 4px 10px; font-size:0.75rem;">${isExpanded ? '🔼 Recolher' : '🔽 Visualizar/Atualizar'}</button>
                 <button onclick="deleteEntireChallenge(${cIndex})" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:0.85rem;" title="Excluir Desafio Inteiro">🗑️ Excluir</button>
               </div>
             </div>
             <div style="background:rgba(0,0,0,0.4); border-radius:6px; height:8px; overflow:hidden; margin:12px 0;"><div style="background:var(--accent); height:100%; width:${percentChal}%;"></div></div>
-            ${itemsHtml}
-            ${addManualHtml}
+            <div id="chalBody_${chal.id}" style="display:${isExpanded ? 'block' : 'none'};">
+              ${addSearchHtml}
+              <div style="margin-top: 10px; max-height: 300px; overflow-y: auto;">
+                ${itemsHtml || '<p style="color:var(--text-muted); font-size:0.8rem;">Nenhum livro listado neste desafio ainda.</p>'}
+              </div>
+            </div>
           </div>
         `;
       });
+    }
+
+    function toggleChallengeSection(chalId) {
+      challengesSectionToggles[chalId] = challengesSectionToggles[chalId] === false ? true : false;
+      save(); renderChallenges();
     }
 
     function toggleChallengeBook(cIndex, bIndex) {
@@ -1546,13 +1592,21 @@
       save(); renderChallenges();
     }
 
-    function addManualChallengeItem(cIndex) {
-      const inputEl = document.getElementById(`manualItem_${cIndex}`);
+    function addSiteBookToChallenge(cIndex) {
+      const inputEl = document.getElementById(`inputBookForChal_${cIndex}`);
       const val = inputEl.value.trim();
       if (val) {
-        customChallenges[cIndex].books.push({ title: val, read: false });
-        inputEl.value = '';
-        save(); renderChallenges();
+        // Verifica se já existe para evitar duplicata no mesmo desafio
+        const exists = customChallenges[cIndex].books.some(b => b.title.toLowerCase() === val.toLowerCase());
+        if (!exists) {
+          customChallenges[cIndex].books.push({ title: val, read: false });
+          inputEl.value = '';
+          save(); renderChallenges();
+        } else {
+          alert('Este livro já está adicionado neste desafio!');
+        }
+      } else {
+        alert('Digite ou selecione um livro válido.');
       }
     }
 
@@ -1722,57 +1776,93 @@
         return;
       }
 
-      const statusOrder = { 'Não Iniciada': 1, 'Em Andamento': 2, 'Hiato': 3, 'Concluída': 4, 'Abandonada': 5 };
-      seriesKeys.sort((a, b) => {
-        const statA = seriesStatuses[a] || 'Não Iniciada', statB = seriesStatuses[b] || 'Não Iniciada';
-        const rankA = statusOrder[statA] || 6, rankB = statusOrder[statB] || 6;
-        if (rankA !== rankB) return rankA - rankB;
-        return a.localeCompare(b, 'pt-BR');
-      });
+      const blocks = {
+        'Não Iniciada': [],
+        'Em Andamento': [],
+        'Em Pausa': [],
+        'Concluída': [],
+        'Abandonada': []
+      };
 
       seriesKeys.forEach(sName => {
-        const data = seriesMap[sName];
-        if (!seriesStatuses[sName]) seriesStatuses[sName] = 'Não Iniciada';
-        if (!seriesCheckedBooks[sName]) seriesCheckedBooks[sName] = {};
+        let st = seriesStatuses[sName] || 'Não Iniciada';
+        if (st === 'Hiato') st = 'Em Pausa';
+        if (!blocks[st]) blocks[st] = [];
+        blocks[st].push(sName);
+      });
 
-        const totalVol = Math.max(data.maxVol, data.volumesRead.size, 1);
-        let checkedCount = 0;
-        for (let i = 1; i <= totalVol; i++) { if (data.volumesRead.has(i) || seriesCheckedBooks[sName][i]) checkedCount++; }
-        const percentSeries = Math.min(100, Math.round((checkedCount / totalVol) * 100));
+      const blockOrder = ['Em Andamento', 'Não Iniciada', 'Em Pausa', 'Concluída', 'Abandonada'];
 
-        let checkBoxesHtml = '';
-        for (let i = 1; i <= totalVol; i++) {
-          let isChecked = data.volumesRead.has(i) || !!seriesCheckedBooks[sName][i];
-          checkBoxesHtml += `<label style="display:inline-flex; align-items:center; gap:4px; font-size:0.75rem; background:rgba(255,255,255,0.04); padding:4px 8px; border-radius:6px; cursor:pointer;" title="Vol. ${i}"><input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleSeriesVolumeCheck('${sName}', ${i})"> Vol. ${i}</label>`;
-        }
+      blockOrder.forEach(blockName => {
+        const keysInBlock = blocks[blockName] || [];
+        if (keysInBlock.length === 0) return;
 
-        const isCompleted = (seriesStatuses[sName] === 'Concluída');
+        keysInBlock.sort((a,b) => a.localeCompare(b, 'pt-BR'));
+
+        let isSectionExpanded = seriesSectionToggles[blockName] !== false;
+
+        let blockContentHtml = '';
+        keysInBlock.forEach(sName => {
+          const data = seriesMap[sName];
+          if (!seriesStatuses[sName]) seriesStatuses[sName] = 'Não Iniciada';
+          if (!seriesCheckedBooks[sName]) seriesCheckedBooks[sName] = {};
+
+          const totalVol = Math.max(data.maxVol, data.volumesRead.size, 1);
+          let checkedCount = 0;
+          for (let i = 1; i <= totalVol; i++) { if (data.volumesRead.has(i) || seriesCheckedBooks[sName][i]) checkedCount++; }
+          const percentSeries = Math.min(100, Math.round((checkedCount / totalVol) * 100));
+
+          let checkBoxesHtml = '';
+          for (let i = 1; i <= totalVol; i++) {
+            let isChecked = data.volumesRead.has(i) || !!seriesCheckedBooks[sName][i];
+            checkBoxesHtml += `<label style="display:inline-flex; align-items:center; gap:4px; font-size:0.75rem; background:rgba(255,255,255,0.04); padding:4px 8px; border-radius:6px; cursor:pointer;" title="Vol. ${i}"><input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleSeriesVolumeCheck('${sName}', ${i})"> Vol. ${i}</label>`;
+          }
+
+          const isCompleted = (blockName === 'Concluída');
+
+          blockContentHtml += `
+            <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.08); margin-bottom: 10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+                <div style="font-weight:bold; font-size:0.95rem; color:var(--text); display:flex; align-items:center; gap:8px;">
+                  <span>📖 ${sName}</span>
+                  ${isCompleted ? '<span style="font-size:0.75rem; background:rgba(245,158,11,0.2); color:var(--gold-bright); padding:2px 8px; border-radius:6px; border:1px solid rgba(245,158,11,0.4);">🪙 +30 pts</span>' : ''}
+                  <button onclick="editSeriesTotalVolumes('${sName}', ${totalVol})" style="background:none; border:none; color:var(--gold-bright); cursor:pointer; font-size:0.8rem;" title="Editar Total de Volumes">✏️ ${totalVol} vol(s)</button>
+                  <button onclick="deleteSeriesRecord('${sName}')" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:0.8rem;" title="Excluir série">🗑️</button>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <select onchange="updateSeriesStatus('${sName}', this.value)" style="padding:4px 8px; font-size:0.75rem; border-radius:6px; background:#0b0f19; color:var(--text);">
+                    <option value="Não Iniciada" ${seriesStatuses[sName] === 'Não Iniciada' ? 'selected' : ''}>⏳ Não Iniciada</option>
+                    <option value="Em Andamento" ${seriesStatuses[sName] === 'Em Andamento' ? 'selected' : ''}>📖 Em Andamento</option>
+                    <option value="Em Pausa" ${seriesStatuses[sName] === 'Em Pausa' ? 'selected' : ''}>⏸️ Em Pausa</option>
+                    <option value="Concluída" ${seriesStatuses[sName] === 'Concluída' ? 'selected' : ''}>✅ Concluída (+30 pts)</option>
+                    <option value="Abandonada" ${seriesStatuses[sName] === 'Abandonada' ? 'selected' : ''}>❌ Abandonada</option>
+                  </select>
+                  <span style="font-size:0.8rem; color:var(--gold-bright); font-weight:bold;">${checkedCount} / ${totalVol} (${percentSeries}%)</span>
+                </div>
+              </div>
+              <div style="background:rgba(0,0,0,0.4); border-radius:6px; height:8px; overflow:hidden; margin-bottom:10px;"><div style="background:var(--success); height:100%; width:${percentSeries}%;"></div></div>
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">${checkBoxesHtml}</div>
+            </div>
+          `;
+        });
 
         seriesContainer.innerHTML += `
-          <div style="background:rgba(255,255,255,0.03); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.08);">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
-              <div style="font-weight:bold; font-size:0.95rem; color:var(--text); display:flex; align-items:center; gap:8px;">
-                <span>📖 ${sName}</span>
-                ${isCompleted ? '<span style="font-size:0.75rem; background:rgba(245,158,11,0.2); color:var(--gold-bright); padding:2px 8px; border-radius:6px; border:1px solid rgba(245,158,11,0.4);">🪙 +30 pts</span>' : ''}
-                <button onclick="editSeriesTotalVolumes('${sName}', ${totalVol})" style="background:none; border:none; color:var(--gold-bright); cursor:pointer; font-size:0.8rem;" title="Editar Total de Volumes">✏️ ${totalVol} vol(s)</button>
-                <button onclick="deleteSeriesRecord('${sName}')" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:0.8rem;" title="Excluir série">🗑️</button>
-              </div>
-              <div style="display:flex; align-items:center; gap:10px;">
-                <select onchange="updateSeriesStatus('${sName}', this.value)" style="padding:4px 8px; font-size:0.75rem; border-radius:6px; background:#0b0f19; color:var(--text);">
-                  <option value="Não Iniciada" ${seriesStatuses[sName] === 'Não Iniciada' ? 'selected' : ''}>⏳ Não Iniciada</option>
-                  <option value="Em Andamento" ${seriesStatuses[sName] === 'Em Andamento' ? 'selected' : ''}>📖 Em Andamento</option>
-                  <option value="Hiato" ${seriesStatuses[sName] === 'Hiato' ? 'selected' : ''}>⏸️ Hiato</option>
-                  <option value="Concluída" ${seriesStatuses[sName] === 'Concluída' ? 'selected' : ''}>✅ Concluída (+30 pts)</option>
-                  <option value="Abandonada" ${seriesStatuses[sName] === 'Abandonada' ? 'selected' : ''}>❌ Abandonada</option>
-                </select>
-                <span style="font-size:0.8rem; color:var(--gold-bright); font-weight:bold;">${checkedCount} / ${totalVol} (${percentSeries}%)</span>
-              </div>
+          <div style="background:rgba(19,26,42,0.6); border:1px solid rgba(139,92,246,0.3); border-radius:14px; padding:14px; margin-bottom:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="toggleSeriesBlock('${blockName}')">
+              <h3 style="margin:0; font-size:1.05rem; color:#c084fc;">📂 Bloco: ${blockName} (${keysInBlock.length})</h3>
+              <button class="backup-btn" style="padding: 4px 10px; font-size:0.75rem;">${isSectionExpanded ? '🔼 Recolher Bloco' : '🔽 Visualizar Bloco'}</button>
             </div>
-            <div style="background:rgba(0,0,0,0.4); border-radius:6px; height:8px; overflow:hidden; margin-bottom:10px;"><div style="background:var(--success); height:100%; width:${percentSeries}%;"></div></div>
-            <div style="display:flex; gap:6px; flex-wrap:wrap;">${checkBoxesHtml}</div>
+            <div id="seriesBlock_${blockName.replace(/\s+/g, '')}" style="display:${isSectionExpanded ? 'block' : 'none'}; margin-top:12px;">
+              ${blockContentHtml}
+            </div>
           </div>
         `;
       });
+    }
+
+    function toggleSeriesBlock(blockName) {
+      seriesSectionToggles[blockName] = seriesSectionToggles[blockName] === false ? true : false;
+      save(); renderSeriesTab();
     }
 
     function editSeriesTotalVolumes(sName, currentTotal) {
@@ -2010,7 +2100,7 @@
         book.seriesVol = parseInt(document.getElementById('editSeriesVol').value) || 1;
         book.seriesTotal = parseInt(document.getElementById('editSeriesTotal').value) || 1;
         if (book.seriesName.trim()) {
-          if (!seriesStatuses[book.seriesName.trim()]) seriesStatuses[book.seriesName.trim()] = 'Em Andamento';
+          if (!seriesStatuses[book.seriesName.trim()]) seriesStatuses[book.seriesName.trim()] = 'Não Iniciada';
         }
       } else { book.seriesName = ''; book.seriesVol = 0; book.seriesTotal = 0; }
 
@@ -2125,7 +2215,7 @@
         seriesVol = parseInt(document.getElementById('uniSeriesVol').value) || 1;
         seriesTotal = parseInt(document.getElementById('uniSeriesTotal').value) || 1;
         if (seriesName.trim()) {
-          if (!seriesStatuses[seriesName.trim()]) seriesStatuses[seriesName.trim()] = 'Em Andamento';
+          if (!seriesStatuses[seriesName.trim()]) seriesStatuses[seriesName.trim()] = 'Não Iniciada';
         }
       }
 
